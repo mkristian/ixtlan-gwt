@@ -1,0 +1,35 @@
+.info, .warn, .error
+{
+  font-family: verdana,arial,helvetica,sans-serif;
+  opacity: 0.8;
+  padding: 0.5em;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
+.info
+{
+    background-color: lightgreen;
+    border: 1px solid darkgreen;
+    color: darkgreen;
+}
+
+.warn
+{
+  background-color: lightgoldenRodYellow;
+  border: 1px solid darkgoldenrod;
+  color: darkgoldenrod;
+}
+
+.error 
+{
+  background-color: lightyellow;
+  border: 1px solid darkred;
+  color: darkred;
+}
+
+.popup 
+{ 
+  width: 100%;
+  margin-top: 1em;
+}

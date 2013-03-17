@@ -1,0 +1,17 @@
+.loading 
+{    
+  background-color: lightgoldenRodYellow;
+  border: 1px solid darkgoldenrod;
+  color: darkgoldenrod;
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: .8em;
+  opacity: 0.7;
+  padding: 0.1em;
+  margin-top: 0;
+  width: auto;
+  left: 42%;
+  right: 42%;
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+}

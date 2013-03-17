@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+  xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:m="urn:import:com.googlecode.mgwt.ui.client.widget">
+
+  <ui:style>
+  </ui:style>
+
+  <m:WidgetList round='true'>
+    <m:FormListEntry text="Username or Email">
+      <m:MTextBox ui:field="login"/>
+    </m:FormListEntry>
+    <m:FormListEntry text="Password">
+      <m:MPasswordTextBox ui:field="password" name="password"/>
+    </m:FormListEntry>
+    <m:Button ui:field="loginButton">login</m:Button>
+    <g:HTML></g:HTML>
+    <m:FormListEntry text="Username or Email">
+      <m:MTextBox ui:field="username"/>
+    </m:FormListEntry>
+    <m:Button ui:field="resetPasswordButton">password reset</m:Button>
+    </m:WidgetList>
+</ui:UiBinder>
