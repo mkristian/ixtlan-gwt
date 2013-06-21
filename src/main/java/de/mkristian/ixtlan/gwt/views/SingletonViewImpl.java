@@ -4,77 +4,91 @@ import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.EDIT;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBar;
 
 import de.mkristian.ixtlan.gwt.places.RestfulActionEnum;
 import de.mkristian.ixtlan.gwt.places.SingletonFactory;
-import de.mkristian.ixtlan.gwt.presenters.SingletonPresenter;
 import de.mkristian.ixtlan.gwt.session.Guard;
 import de.mkristian.ixtlan.gwt.ui.EnabledEditor;
 
-public abstract class SingletonViewImpl<T> extends DetailViewImpl {
+public abstract class SingletonViewImpl<T>
+	extends DetailViewImpl
+	implements SingletonView<T> {
 
-    @UiField public HeaderButton reloadButton;
-    @UiField public HeaderButton editButton;
-    @UiField public HeaderButton cancelButton;
-    @UiField public HeaderButton saveButton;
+    private HeaderButton reloadButton;
+    private HeaderButton editButton;
+    private HeaderButton cancelButton;
+    private HeaderButton saveButton;
 
-    @UiField(provided = true) public EnabledEditor<T> editor;
-    
-    private SingletonPresenter<T> presenter;
+    private EnabledEditor<T> editor;
     
     protected final Guard guard;
-    protected final PlaceController places;
     protected final SimpleBeanEditorDriver<T, Editor<T>> editorDriver;
     protected final SingletonFactory<T, ?> factory;
     
     public SingletonViewImpl( final Guard guard,
-            final PlaceController places, 
             final EnabledEditor<T> editor,
             final SimpleBeanEditorDriver<T, Editor<T>> driver,
             SingletonFactory<T, ?> factory ) {
         this.guard = guard;
-        this.places = places; 
         this.editor = editor;      
         this.factory = factory;
         this.editorDriver = driver;
         this.editorDriver.initialize( editor );
+        
+        // setup widget
+        reloadButton = new HeaderButton();
+        reloadButton.setText( "Reload" );
+        
+        editButton = new HeaderButton();
+        editButton.setText( "Edit" );
+        
+        saveButton = new HeaderButton();
+        saveButton.setText( "Save" );
+        
+        cancelButton = new HeaderButton();
+        cancelButton.setText( "Cancel" );
+
+        ButtonBar bar = new ButtonBar();        
+        bar.add( reloadButton );
+        bar.add( editButton );
+        bar.add( saveButton );
+        bar.add( cancelButton );
+        
+        FlowPanel main = new FlowPanel();
+        main.add( bar );
+        main.add( editor );
+        
+        setWidget( main );
     }
 
     protected boolean isAllowed( RestfulActionEnum action ){
         return guard.isAllowed( factory.placeName(), action );
     }
     
-    public void setPresenter( SingletonPresenter<T> presenter ) {
-        this.presenter = presenter;
-    }
-
-    @UiHandler("cancelButton")
-    public void onTapCancel( TapEvent event ) {
-        places.goTo( factory.newRestfulPlace( this.presenter.get(),
-                RestfulActionEnum.SHOW ) );
-    }
-
-    @UiHandler("reloadButton")
-    public void onTapReload( TapEvent event ) {
-        presenter.reload();
+    @Override
+    public HasTapHandlers getCancelButton() {
+    	return this.cancelButton;
     }
     
-    @UiHandler("editButton")
-    public void onTapEdit( TapEvent event ) {
-        places.goTo(  factory.newRestfulPlace( this.presenter.get(),
-                RestfulActionEnum.EDIT ) );
+    @Override
+    public HasTapHandlers getReloadButton() {
+    	return this.reloadButton;
     }
-
-    @UiHandler("saveButton")
-    public void onTapSave( TapEvent event ) {
-        presenter.save( editorDriver.flush() );
+    
+    @Override
+    public HasTapHandlers getEditButton() {
+    	return this.editButton;
     }
-
+    
+    @Override
+    public HasTapHandlers getSaveButton() {
+    	return this.saveButton;
+    }
+    
     private void setupButtons( boolean editable, T model ) {
         editButton.setVisible( false );
         saveButton.setVisible( false );
@@ -98,6 +112,12 @@ public abstract class SingletonViewImpl<T> extends DetailViewImpl {
         editorDriver.edit( model );
     }
 
+    @Override
+    public T flush(){
+    	return editorDriver.flush();
+    }
+
+    @Override
     public boolean isDirty() {
         return editorDriver.isDirty();
     }

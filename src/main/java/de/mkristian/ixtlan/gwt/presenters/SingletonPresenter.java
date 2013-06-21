@@ -9,7 +9,7 @@ public interface SingletonPresenter<T>
     
     void reload();
 
-    void save( T model );
+    void save();
 
     void reset( T model );
     
@@ -21,6 +21,5 @@ public interface SingletonPresenter<T>
 
     boolean isDirty();
 
-    T get();
-
+    T current();
 }

@@ -19,36 +19,45 @@ public abstract class SingletonPresenterImpl<T>
                 RemoteSingleton<T> remote) {
         super(errors);
         this.view = view;
-        this.view.setPresenter( this );
         this.remote = remote;
     }
 
+    @Override
     public SingletonView<T> view(){
         return view;
     }
-    
-    public T get() {
+
+    @Override
+    public T current() {
         return model;
     }
     
-    public void save( final T model ) {
+    @Override
+	public void save() {
+    	save( view.flush() );
+	}
+
+	private void save( final T model ) {
         this.model = model;
         isEditing = false;
         remote.update( model );
     }
 
+    @Override
     public void show(){
         isEditing = false;
         setWidget( view );
         remote.retrieve();
     }
 
+    @Override
     public void edit(){
         isEditing = true;
         setWidget( view );
         remote.retrieve();
     }
 
+    @Override
     public void reset( T model ) {
         this.model = model;
         if( isEditing ) {
@@ -59,6 +68,7 @@ public abstract class SingletonPresenterImpl<T>
         }
     }
 
+    @Override
     public void reload() {
         if( isEditing ) {
             edit();
@@ -68,6 +78,7 @@ public abstract class SingletonPresenterImpl<T>
         }
     }
 
+    @Override
     public void show( T model ) {
         this.model = model;
         isEditing = false;
@@ -75,6 +86,7 @@ public abstract class SingletonPresenterImpl<T>
         view.show( model );
     }
 
+    @Override
     public void edit( T model ) {
         this.model = model;
         isEditing = true;
@@ -82,6 +94,7 @@ public abstract class SingletonPresenterImpl<T>
         view.edit( model );
     }
 
+    @Override
     public boolean isDirty() {
         return isEditing && view.isDirty();
     }

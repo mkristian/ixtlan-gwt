@@ -3,6 +3,8 @@ package de.mkristian.ixtlan.gwt.activities;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 
 import de.mkristian.ixtlan.gwt.events.ModelEvent;
 import de.mkristian.ixtlan.gwt.events.ModelEventHandler;
@@ -35,8 +37,43 @@ public abstract class AbstractSingletonActivity<T> extends DetailActivity {
     public void start( AcceptsOneWidget display, EventBus eventBus ) {
         super.start( display, eventBus );
         presenter.setDisplay( display );
+        
+        addHandlerRegistration( presenter.view().getCancelButton().addTapHandler( new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+		        places.goTo( factory.newRestfulPlace( presenter.current(),
+		                RestfulActionEnum.SHOW ) );
+			}
+		} ) );
+
+        addHandlerRegistration( presenter.view().getReloadButton().addTapHandler( new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+		        presenter.reload();
+			}
+		} ) );
+
+        addHandlerRegistration( presenter.view().getEditButton().addTapHandler( new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+		        places.goTo( factory.newRestfulPlace( presenter.current(),
+		                RestfulActionEnum.EDIT ) );
+			}
+		} ) );
+
+        addHandlerRegistration( presenter.view().getSaveButton().addTapHandler( new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+		        presenter.save();
+			}
+		} ) );
+        
         eventBus.addHandler( factory.eventType(), new ModelEventHandler<T>(){
-            //@Override
+            @Override
             public void onModelEvent(ModelEvent<T> event) {
                 switch( event.getAction() ){
                     case LOAD:
