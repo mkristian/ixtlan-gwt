@@ -20,5 +20,5 @@
       <m:MTextBox ui:field="username"/>
     </m:FormListEntry>
     <m:Button ui:field="resetPasswordButton">password reset</m:Button>
-    </m:WidgetList>
+  </m:WidgetList>
 </ui:UiBinder>

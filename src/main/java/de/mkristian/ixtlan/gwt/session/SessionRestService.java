@@ -6,9 +6,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 import org.fusesource.restygwt.client.MethodCallback;
+import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 
+import de.mkristian.ixtlan.gwt.dispatchers.RestfulDispatcherSingleton;
+
 @Path("/session")
+@Options(dispatcher = RestfulDispatcherSingleton.class)
 public interface SessionRestService extends RestService {
 
     @POST @Consumes("application/json")

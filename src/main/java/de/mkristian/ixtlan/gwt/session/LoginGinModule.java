@@ -14,9 +14,10 @@ public class LoginGinModule extends AbstractGinModule {
 
     public static class LoginViewWireup  {
         @Inject
-        LoginViewWireup( SessionGWTApplication app, LoginView view, LoginPresenter presenter ){
+        LoginViewWireup( //SessionGWTApplication app, 
+                LoginView view, LoginPresenter presenter ){
             view.setPresenter( presenter );
-            app.setPresenter( presenter );
+           // app.setPresenter( presenter );
         }
     }
 }

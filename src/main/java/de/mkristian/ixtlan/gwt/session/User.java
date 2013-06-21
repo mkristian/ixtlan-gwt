@@ -5,11 +5,10 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.fusesource.restygwt.client.Json;
-import org.fusesource.restygwt.client.Json.Style;
 
-@Json(style = Style.RAILS)
-public class User {
+import de.mkristian.ixtlan.gwt.models.HasToDisplay;
+
+public class User implements HasToDisplay {
 
   private String login;
 
@@ -42,5 +41,10 @@ public class User {
     return (other instanceof User) && 
         ((User)other).login == login;
   }
+
+@Override
+public String toDisplay() {
+    return login + "(" + name + ")";
+}
 
 }

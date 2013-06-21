@@ -10,6 +10,7 @@ import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.ixtlan.gwt.models.HasToDisplay;
 import de.mkristian.ixtlan.gwt.models.Identifiable;
+import de.mkristian.ixtlan.gwt.session.User;
 
 @Json(style = Style.RAILS)
 public class Audit implements HasToDisplay, Identifiable {
@@ -19,19 +20,29 @@ public class Audit implements HasToDisplay, Identifiable {
   @Json(name = "created_at")
   private final Date createdAt;
 
+  @Json(name = "created_by")
+  private final User createdBy;
+  
   private String login;
 
   private String message;
 
+  @Json( name = "http_method" )
+  private String method;
+
+  private String path;
+  
   public Audit(){
-    this(0, null);
+    this(0, null, null);
   }
   
   @JsonCreator
   public Audit(@JsonProperty("id") int id, 
-          @JsonProperty("createdAt") Date createdAt){
+          @JsonProperty("createdAt") Date createdAt,
+          @JsonProperty("createdBy") User createdBy){
     this.id = id;
     this.createdAt = createdAt;
+    this.createdBy = createdBy;
   }
 
   public int getId(){
@@ -40,6 +51,10 @@ public class Audit implements HasToDisplay, Identifiable {
 
   public Date getCreatedAt(){
     return createdAt;
+  }
+
+  public User getCreatedBy(){
+    return createdBy;
   }
 
   public String getLogin(){
@@ -58,6 +73,26 @@ public class Audit implements HasToDisplay, Identifiable {
     message = value;
   }
 
+  public String getMethod() {
+	return method;
+  }
+
+  public void setMethod(String method) {
+	this.method = method;
+  }
+
+  public String getPath() {
+	return path;
+  }
+
+  public void setPath(String path) {
+	this.path = path;
+  }
+
+  public String getHttpInfo() {
+	  return method + " " + path;
+  }
+  
   public int hashCode(){
     return id;
   }

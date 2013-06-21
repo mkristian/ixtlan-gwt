@@ -55,6 +55,7 @@ public class MLoginViewImpl extends AbstractLoginViewImpl {
     public void onTapResetPassword(TapEvent e) {
         resetPassword();
     }
+    
     @Override
     HasValue<String> getLogin() {
         return login;

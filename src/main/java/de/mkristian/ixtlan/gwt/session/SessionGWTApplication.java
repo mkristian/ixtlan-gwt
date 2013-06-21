@@ -9,6 +9,6 @@ public interface SessionGWTApplication extends GWTApplication{
     
     void stopSession();
 
-    void setPresenter(LoginPresenter presenter);
+//    void setPresenter( LoginPresenter presenter );
 
 }

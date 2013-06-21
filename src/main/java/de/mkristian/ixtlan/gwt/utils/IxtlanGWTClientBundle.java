@@ -10,4 +10,7 @@ public interface IxtlanGWTClientBundle extends ClientBundle  {
     @Source("network_indicator.css")
     NetworkIndicatorCss getNetworkIndicatorCss();
     
+    @Source("view.css")
+    ViewCss getViewCss();
+    
 }

@@ -6,12 +6,10 @@ import java.util.Date;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.fusesource.restygwt.client.Json;
-import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.ixtlan.gwt.models.HasToDisplay;
 import de.mkristian.ixtlan.gwt.session.User;
 
-@Json(style = Style.RAILS)
 public class Configuration implements HasToDisplay {
 
   @Json(name = "created_at")
@@ -23,12 +21,12 @@ public class Configuration implements HasToDisplay {
   @Json(name = "modified_by")
   private final User modifiedBy;
 
+  @Json(name = "base_url")
+  private String baseUrl;
+  
   @Json(name = "errors_keep_dumps")
   private int errorsKeepDumps;
-
-  @Json(name = "errors_base_url")
-  private String errorsBaseUrl;
-
+  
   @Json(name = "errors_from_email")
   private String errorsFromEmail;
 
@@ -38,13 +36,19 @@ public class Configuration implements HasToDisplay {
   @Json(name = "idle_session_timeout")
   private int idleSessionTimeout;
 
-  @Json(name = "audits_keep_logs")
-  private int auditsKeepLogs;
+  @Json(name = "audit_keep_logs")
+  private int auditKeepLogs;
+
+  @Json(name = "users_url")
+  private String usersUrl;
+
+  @Json(name = "users_token")
+  private String usersToken;
 
   public Configuration(){
     this(null, null, null);
   }
-  
+
   @JsonCreator
   public Configuration(@JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
@@ -74,14 +78,6 @@ public class Configuration implements HasToDisplay {
     errorsKeepDumps = value;
   }
 
-  public String getErrorsBaseUrl(){
-    return errorsBaseUrl;
-  }
-
-  public void setErrorsBaseUrl(String value){
-    errorsBaseUrl = value;
-  }
-
   public String getErrorsFromEmail(){
     return errorsFromEmail;
   }
@@ -106,15 +102,39 @@ public class Configuration implements HasToDisplay {
     idleSessionTimeout = value;
   }
 
-  public int getAuditsKeepLogs(){
-    return auditsKeepLogs;
+  public int getAuditKeepLogs(){
+    return auditKeepLogs;
   }
 
-  public void setAuditsKeepLogs(int value){
-    auditsKeepLogs = value;
+  public void setAuditKeepLogs(int value){
+    auditKeepLogs = value;
+  }
+  
+  public String getBaseUrl() {
+	return baseUrl;
+  }
+
+  public void setBaseUrl(String baseUrl) {
+	this.baseUrl = baseUrl;
+  }
+
+  public String getUsersUrl() {
+	return usersUrl;
+  }
+
+  public void setUsersUrl(String usersUrl) {
+	this.usersUrl = usersUrl;
+  }
+
+  public String getUsersToken() {
+	return usersToken;
+  }
+
+  public void setUsersToken(String usersToken) {
+	this.usersToken = usersToken;
   }
 
   public String toDisplay() {
-    return errorsKeepDumps + "";
+    return "Configuration( idle_session_timeout=" + idleSessionTimeout + " )";
   }
 }

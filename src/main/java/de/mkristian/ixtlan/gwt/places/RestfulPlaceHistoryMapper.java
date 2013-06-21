@@ -13,42 +13,21 @@ import javax.inject.Inject;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
-import com.google.gwt.place.shared.PlaceHistoryMapper;
 
-import de.mkristian.ixtlan.gwt.events.ModelEvent;
-import de.mkristian.ixtlan.gwt.session.Session;
-import de.mkristian.ixtlan.gwt.session.SessionEvent;
-import de.mkristian.ixtlan.gwt.session.SessionEventHandler;
-
-public class RestfulPlaceHistoryMapper implements PlaceHistoryMapper {
+public class RestfulPlaceHistoryMapper extends PlaceWithSessionHistoryMapper {
 
     private final Map<String, RestfulPlaceTokenizer<?>> map = new HashMap<String, RestfulPlaceTokenizer<?>>();
-    private boolean activeSession = false;
     
     @Inject
     public RestfulPlaceHistoryMapper( EventBus eventBus ){
-        eventBus.addHandler( SessionEvent.TYPE, new SessionEventHandler() {
-            
-            @Override
-            public void onModelEvent(ModelEvent<Session> event) {
-                switch( event.getAction() ){
-                    case CREATE:
-                        activeSession = true;
-                        break;
-                    case DESTROY:
-                        activeSession = false;
-                        break;
-                }
-                
-            }
-        });
+        super( eventBus );
     }
     
     protected void register(String key, RestfulPlaceTokenizer<?> tokenizer) {
         this.map.put(key, tokenizer);
     }
 
-    public Place getPlace(String token) {
+    public PlaceWithSession getPlaceWithoutSession(String token) {
         // name => ""
         // name/ => ""
         // name$query => $query
@@ -74,12 +53,7 @@ public class RestfulPlaceHistoryMapper implements PlaceHistoryMapper {
         if (tokenizer == null) {
             return null;
         } else {
-            RestfulPlace<?, ?> place = tokenizer.getPlace(subtoken);
-            if (place != null) {
-                // place needs to be different on the level of equals in order to trigger an activity
-                place.hasSession = activeSession;
-            }
-            return place;
+            return tokenizer.getPlace(subtoken);
         }
     }
 

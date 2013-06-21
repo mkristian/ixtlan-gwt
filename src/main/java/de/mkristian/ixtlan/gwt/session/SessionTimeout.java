@@ -45,6 +45,7 @@ public class SessionTimeout{
                         break;
                     case DESTROY:
                         session = null;
+                        countdown = -1;
                         break;
                     default:
                 }

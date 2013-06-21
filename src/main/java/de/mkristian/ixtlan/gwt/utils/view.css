@@ -1,0 +1,13 @@
+.signature * 
+{
+  font-size: .7em;
+  float: left;
+}
+.signature div
+{
+  padding-right: 0.2em;
+}
+.signature span
+{
+  padding-right: 1em;
+}

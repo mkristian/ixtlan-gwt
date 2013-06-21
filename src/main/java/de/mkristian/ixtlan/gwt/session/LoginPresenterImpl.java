@@ -16,15 +16,15 @@ public class LoginPresenterImpl implements LoginPresenter{
     private final SessionRemote remote;
     private final SessionRestService service;
     private final DisplayMessage displayMassage;
-    private final SessionGWTApplication app;
+    //private final SessionGWTApplication app;
 
     @Inject
     public LoginPresenterImpl( final SessionRestService service,
             final DisplayMessage displayMessage, 
-            final SessionGWTApplication app,
+         //   final SessionGWTApplication app,
             final SessionRemote remote ) {
         this.service = service;
-        this.app = app;
+      //  this.app = app;
         this.displayMassage = displayMessage;
         this.remote = remote;
     }
@@ -39,7 +39,6 @@ public class LoginPresenterImpl implements LoginPresenter{
             public void onSuccess(Method method, Session session) {
                 GWT.log("logged in: " + login);
                 remote.fireCreate( method, session );
-                app.startSession( session.user );
             }
 
             @Override
@@ -54,7 +53,6 @@ public class LoginPresenterImpl implements LoginPresenter{
     @Override
     public void logout() {
         remote.loading();
-        app.stopSession();
         service.destroy(new MethodCallback<Void>() {
             @Override
             public void onSuccess(Method method, Void response) {
