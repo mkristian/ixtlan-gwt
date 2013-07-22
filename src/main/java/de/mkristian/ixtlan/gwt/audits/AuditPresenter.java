@@ -10,10 +10,11 @@ import de.mkristian.ixtlan.gwt.utils.ErrorHandlerWithDisplay;
 public class AuditPresenter extends ReadOnlyPresenterImpl<Audit> {
 
 	@Inject
-	public AuditPresenter(ErrorHandlerWithDisplay errors,
-			AuditView view, AuditListView listView,
-			AuditRemoteReadOnly remote) {
-		super(errors, view, listView, remote);
+	public AuditPresenter( ErrorHandlerWithDisplay errors,
+			AuditView view,
+			AuditListView listView,
+			AuditCache cache ) {
+		super( errors, view, listView, cache );
 	}
 	
 }

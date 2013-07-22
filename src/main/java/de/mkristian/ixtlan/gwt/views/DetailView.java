@@ -6,20 +6,24 @@ import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 
 public interface DetailView extends IsWidget{
 	
-	public HasTapHandlers getActionButton();
-    
-    public HasTapHandlers getBackbutton();
+	HasTapHandlers getListAllButton();
 
-    public HasTapHandlers getMainButton();
+	HasTapHandlers getNewButton();
 
-    public HasTapHandlers getLogoutButton();
-    
-    public HasText getHeaderText();
+	HasTapHandlers getReloadButton();
 	
-	public HasText getActionButtonText();
-	
-	public HasText getMainButtonText();
+	HasTapHandlers getBackbutton();
 
-	public HasText getBackbuttonText();
+	HasTapHandlers getMainButton();
+
+	HasTapHandlers getLogoutButton();
+    
+	HasText getHeaderText();
+	
+	HasText getListAllButtonText();
+	
+	HasText getMainButtonText();
+
+	HasText getBackbuttonText();
 
 }

@@ -13,6 +13,7 @@ import de.mkristian.ixtlan.gwt.places.RestfulPlace;
 import de.mkristian.ixtlan.gwt.places.SingletonFactory;
 import de.mkristian.ixtlan.gwt.presenters.SingletonPresenter;
 import de.mkristian.ixtlan.gwt.session.SessionFacade;
+import de.mkristian.ixtlan.gwt.views.SingletonView;
 
 public abstract class AbstractSingletonActivity<T> extends DetailActivity {
 
@@ -33,12 +34,14 @@ public abstract class AbstractSingletonActivity<T> extends DetailActivity {
         this.places = places;
         this.factory = factory;
     }
-        
+    
+    @Override 
     public void start( AcceptsOneWidget display, EventBus eventBus ) {
         super.start( display, eventBus );
         presenter.setDisplay( display );
         
-        addHandlerRegistration( presenter.view().getCancelButton().addTapHandler( new TapHandler() {
+        SingletonView<T> view = presenter.view();
+		addHandlerRegistration( view.getCancelButton().addTapHandler( new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
@@ -47,7 +50,7 @@ public abstract class AbstractSingletonActivity<T> extends DetailActivity {
 			}
 		} ) );
 
-        addHandlerRegistration( presenter.view().getReloadButton().addTapHandler( new TapHandler() {
+        addHandlerRegistration( view.getReloadButton().addTapHandler( new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
@@ -55,7 +58,7 @@ public abstract class AbstractSingletonActivity<T> extends DetailActivity {
 			}
 		} ) );
 
-        addHandlerRegistration( presenter.view().getEditButton().addTapHandler( new TapHandler() {
+        addHandlerRegistration( view.getEditButton().addTapHandler( new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
@@ -64,7 +67,7 @@ public abstract class AbstractSingletonActivity<T> extends DetailActivity {
 			}
 		} ) );
 
-        addHandlerRegistration( presenter.view().getSaveButton().addTapHandler( new TapHandler() {
+        addHandlerRegistration( view.getSaveButton().addTapHandler( new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {

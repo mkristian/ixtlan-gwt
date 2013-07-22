@@ -21,4 +21,6 @@ public interface ReadOnlyPresenter<T extends Identifiable>
 
     void show( int id );
 
+	void reload();
+
 }

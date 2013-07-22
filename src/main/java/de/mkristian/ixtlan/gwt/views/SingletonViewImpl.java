@@ -4,10 +4,10 @@ import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.EDIT;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBar;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBarSpacer;
 
 import de.mkristian.ixtlan.gwt.places.RestfulActionEnum;
 import de.mkristian.ixtlan.gwt.places.SingletonFactory;
@@ -18,12 +18,12 @@ public abstract class SingletonViewImpl<T>
 	extends DetailViewImpl
 	implements SingletonView<T> {
 
-    private HeaderButton reloadButton;
-    private HeaderButton editButton;
-    private HeaderButton cancelButton;
-    private HeaderButton saveButton;
+    //private final HeaderButton reloadButton;
+    private final HeaderButton editButton;
+    private final HeaderButton cancelButton;
+    private final HeaderButton saveButton;
 
-    private EnabledEditor<T> editor;
+    private final EnabledEditor<T> editor;
     
     protected final Guard guard;
     protected final SimpleBeanEditorDriver<T, Editor<T>> editorDriver;
@@ -39,10 +39,6 @@ public abstract class SingletonViewImpl<T>
         this.editorDriver = driver;
         this.editorDriver.initialize( editor );
         
-        // setup widget
-        reloadButton = new HeaderButton();
-        reloadButton.setText( "Reload" );
-        
         editButton = new HeaderButton();
         editButton.setText( "Edit" );
         
@@ -52,17 +48,17 @@ public abstract class SingletonViewImpl<T>
         cancelButton = new HeaderButton();
         cancelButton.setText( "Cancel" );
 
-        ButtonBar bar = new ButtonBar();        
-        bar.add( reloadButton );
-        bar.add( editButton );
-        bar.add( saveButton );
-        bar.add( cancelButton );
+        ButtonBar footer = new ButtonBar();
+        footer.add( reloadButton );
+        footer.add( new ButtonBarSpacer() );
+        footer.add( editButton );
+        footer.add( saveButton );
+        footer.add( cancelButton );
+        footer.add( new ButtonBarSpacer() );
         
-        FlowPanel main = new FlowPanel();
-        main.add( bar );
-        main.add( editor );
+        main.add( footer );
         
-        setWidget( main );
+        setWidget( editor );
     }
 
     protected boolean isAllowed( RestfulActionEnum action ){
@@ -89,25 +85,27 @@ public abstract class SingletonViewImpl<T>
     	return this.saveButton;
     }
     
-    private void setupButtons( boolean editable, T model ) {
+    private void setupButtons( boolean editable ) {
         editButton.setVisible( false );
         saveButton.setVisible( false );
         cancelButton.setVisible( false );
-        editorDriver.edit( model );
         editor.setEnabled( editable );
     }
 
-    public void edit( T model ) {
-        setupButtons( true, model );        
+    @Override
+    public void edit() {
+        setupButtons( true );        
         saveButton.setVisible( isAllowed( EDIT ) );
         cancelButton.setVisible( true );
     }
 
-    public void show( T model ) {
-        setupButtons( false, model );  
+    @Override
+    public void show() {
+        setupButtons( false );  
         editButton.setVisible( isAllowed( EDIT ) );
     }
-
+    
+    @Override
     public void reset( T model ) {
         editorDriver.edit( model );
     }

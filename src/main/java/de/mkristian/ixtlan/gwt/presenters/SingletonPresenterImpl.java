@@ -61,11 +61,12 @@ public abstract class SingletonPresenterImpl<T>
     public void reset( T model ) {
         this.model = model;
         if( isEditing ) {
-            view.edit( model );
+            view.edit();
         }
         else {
-            view.show( model );
+            view.show();
         }
+        view.reset( model );
     }
 
     @Override
@@ -83,7 +84,8 @@ public abstract class SingletonPresenterImpl<T>
         this.model = model;
         isEditing = false;
         setWidget( view );
-        view.show( model );
+        view.show();
+        view.reset( model );
     }
 
     @Override
@@ -91,7 +93,8 @@ public abstract class SingletonPresenterImpl<T>
         this.model = model;
         isEditing = true;
         setWidget( view );
-        view.edit( model );
+        view.edit();
+        view.reset( model );
     }
 
     @Override

@@ -3,11 +3,17 @@ package de.mkristian.ixtlan.gwt.presenters;
 import java.util.List;
 
 import de.mkristian.ixtlan.gwt.models.Identifiable;
+import de.mkristian.ixtlan.gwt.views.CRUDListView;
+import de.mkristian.ixtlan.gwt.views.CRUDView;
 
 
 
 public interface CRUDPresenter<T extends Identifiable> extends Presenter {
 
+    CRUDView<T> view();
+
+    CRUDListView<T> listView();
+    
     void reload();
     
     void create( T model );
@@ -29,5 +35,5 @@ public interface CRUDPresenter<T extends Identifiable> extends Presenter {
     
     boolean isDirty();
 
-    T get();
+    T current();
 }

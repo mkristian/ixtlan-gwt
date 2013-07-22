@@ -1,5 +1,7 @@
 package de.mkristian.ixtlan.gwt.places;
 
+import java.util.List;
+
 import org.fusesource.restygwt.client.Method;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -26,8 +28,12 @@ public interface Factory<R extends Identifiable,
     public Type<ModelEventHandler<R>> eventType();
     
     public ModelEvent<R> newEvent( Method method, Throwable e );
-    
+
     public ModelEvent<R> newEvent( Method method, R model, Action action );
 
+    public ModelEvent<R> newEvent( Method method, List<R> models, Action action );
+
+    public R newModel();
+    
     public String placeName();
 }

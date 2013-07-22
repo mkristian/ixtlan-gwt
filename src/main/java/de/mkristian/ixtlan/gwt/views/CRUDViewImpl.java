@@ -1,120 +1,71 @@
 package de.mkristian.ixtlan.gwt.views;
 
-import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.DESTROY;
-import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.EDIT;
-import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.NEW;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.place.shared.Place;
-import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.googlecode.mgwt.ui.client.widget.HeaderButton;
+import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBar;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBarSpacer;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.TrashButton;
 
 import de.mkristian.ixtlan.gwt.models.Identifiable;
 import de.mkristian.ixtlan.gwt.places.RestfulActionEnum;
-import de.mkristian.ixtlan.gwt.presenters.CRUDPresenter;
-import de.mkristian.ixtlan.gwt.session.Guard;
 import de.mkristian.ixtlan.gwt.ui.EnabledEditor;
 
-public abstract class CRUDViewImpl<T extends Identifiable,
-                                      S extends CRUDPresenter<T>> 
-            extends Composite {
+public abstract class CRUDViewImpl<T extends Identifiable> 
+            extends DetailViewImpl
+            implements CRUDView<T> {
 
-    @UiField public Button reloadButton;
-    @UiField public Button newButton;
-    @UiField public Button editButton;
-    @UiField public Button cancelButton;
-    @UiField public Button createButton;
-    @UiField public Button saveButton;
-    @UiField public Button deleteButton;
+    private final ButtonBase editButton;
+    private final ButtonBase cancelButton;
+    private final ButtonBase createButton;
+    private final ButtonBase saveButton;
+    private final ButtonBase deleteButton;
 
-    @UiField(provided = true) public Label header;
-    @UiField(provided = true) public EnabledEditor<T> editor;
-    
-    private S presenter;
-    
-    protected final Guard guard;
-    protected final PlaceController places;
-    protected final SimpleBeanEditorDriver<T, Editor<T>> editorDriver;
+    private final EnabledEditor<T> editor;
+    private final SimpleBeanEditorDriver<T, Editor<T>> editorDriver;
 
-    public CRUDViewImpl( final String title,
-            final Guard guard,
-            final PlaceController places,
-            final EnabledEditor<T> editor,
-            final SimpleBeanEditorDriver<T, Editor<T>> driver) {
-        this.header = new Label( title );
-        this.guard = guard;
-        this.places = places;     
-        this.editor = editor;
+    public CRUDViewImpl( final EnabledEditor<T> editor,
+            final SimpleBeanEditorDriver<T, Editor<T>> driver ) {
+        this.editor = editor;  
         this.editorDriver = driver;
         this.editorDriver.initialize( editor );
+        
+        // setup widget
+        createButton = new HeaderButton();
+        createButton.setText( "Create" );
+
+        cancelButton = new HeaderButton();
+        cancelButton.setText( "Cancel" );
+
+        editButton = new HeaderButton();
+        editButton.setText( "Edit" );
+        
+        saveButton = new HeaderButton();
+        saveButton.setText( "Save" );
+        
+        deleteButton = new TrashButton();
+
+        ButtonBar footer = new ButtonBar();     
+        footer.add( newButton );
+        footer.add( reloadButton );
+        footer.add( new ButtonBarSpacer() );
+        footer.add( createButton );
+        footer.add( editButton );
+        footer.add( saveButton );
+        footer.add( cancelButton );
+        footer.add( new ButtonBarSpacer() );
+        footer.add( deleteButton );
+        
+        setWidget( editor );
+        main.add( footer );
+        
+		listAllButton.setVisible( true );
+        newButton.setVisible( true );
     }
 
-    protected abstract String placeName();
-    protected abstract Place showAllPlace();
-    protected abstract Place newPlace();
-    protected abstract Place showPlace( T model );
-    protected abstract Place editPlace( T model );
-    protected abstract T newModel();
-
-    protected boolean isAllowed( RestfulActionEnum action ){
-        return guard.isAllowed( placeName(), action );
-    }
-    
-    public void setPresenter(S presenter) {
-        this.presenter = presenter;
-    }
-
-    public S getPresenter() {
-        return presenter;
-    }
-
-    @UiHandler("newButton")
-    public void onClickNew(ClickEvent e) {
-        places.goTo( newPlace() );
-    }
-    
-    @UiHandler("cancelButton")
-    public void onClickCancel(ClickEvent e) {
-        places.goTo( showPlace( getPresenter().get() ) );
-    }
-
-    @UiHandler("reloadButton")
-    public void onReloadClick(ClickEvent event) {
-        getPresenter().reload();
-    }
-    
-    @UiHandler("listButton")
-    public void onClickList(ClickEvent e) {
-        places.goTo( showAllPlace() );
-    }
-
-    @UiHandler("editButton")
-    public void onClickEdit(ClickEvent e) {
-        places.goTo( editPlace( getPresenter().get() ) );
-    }
-
-    @UiHandler("createButton")
-    public void onClickCreate(ClickEvent e) {
-        getPresenter().create( editorDriver.flush() );
-    }
-
-    @UiHandler("saveButton")
-    public void onClickSave(ClickEvent e) {
-        getPresenter().save( editorDriver.flush() );
-    }
-
-    @UiHandler("deleteButton")
-    public void onClickDelete(ClickEvent e) {
-        getPresenter().delete( editorDriver.flush() );
-    }
-
-    private void setupButtons( boolean editable, T model ) {
+    private void setupButtons( boolean editable ) {
         reloadButton.setVisible( true );
         newButton.setVisible( true );
         createButton.setVisible( false );
@@ -122,36 +73,91 @@ public abstract class CRUDViewImpl<T extends Identifiable,
         saveButton.setVisible( false );
         cancelButton.setVisible( false );
         deleteButton.setVisible( false );
-        editorDriver.edit( model );
         editor.setEnabled( editable );
     }
 
-    public void edit( T model ) {
-        setupButtons( true, model );        
-        newButton.setVisible( isAllowed( NEW ) );
-        saveButton.setVisible( isAllowed( EDIT ) );
+    @Override
+    public void edit(RestfulActionEnum permission) {
+        setupButtons( true );   
         cancelButton.setVisible( true );
-        deleteButton.setVisible( isAllowed( DESTROY ) );   
+        switch( permission ){
+        case DESTROY:
+            deleteButton.setVisible( true );
+        case NEW:
+            newButton.setVisible( true );
+        case EDIT:
+            saveButton.setVisible( true );
+        default:
+        }
     }
 
-    public void show( T model ) {
-        setupButtons( false, model );  
-        newButton.setVisible( isAllowed( NEW ) );
-        editButton.setVisible( isAllowed( EDIT ) );
+    @Override
+    public void show(RestfulActionEnum permission) {
+        setupButtons( false );
+        switch( permission ){
+        case DESTROY:
+            deleteButton.setVisible( true );
+        case NEW:
+            newButton.setVisible( true );
+        case EDIT:
+            editButton.setVisible( true );
+        default:
+        }
     }
 
-    public void showNew() {
-        setupButtons( true, newModel() );  
+    @Override
+    public void create(RestfulActionEnum permission) {
+        setupButtons( true );  
         newButton.setVisible( false );
         reloadButton.setVisible( false );
-        createButton.setVisible( isAllowed( NEW ) );
+        cancelButton.setVisible( true );
+        switch( permission ){
+        case DESTROY:
+        case NEW:
+            createButton.setVisible( true );
+        default:
+        }
     }
 
-    public void reset(T model) {
+    @Override
+    public void reset( T model ) {
         editorDriver.edit( model );
+        // TODO maybe better way to decide the editing mode !!
+        editor.setEnabled( cancelButton.isVisible() );
     }
 
+    @Override
     public boolean isDirty() {
         return editorDriver.isDirty();
+    }
+
+    @Override
+    public T flush() {
+        return editorDriver.flush();
+    }
+
+    @Override
+    public HasTapHandlers getCreateButton() {
+    	return this.createButton;
+    }
+
+    @Override
+    public HasTapHandlers getCancelButton() {
+    	return this.cancelButton;
+    }
+    
+	@Override
+	public HasTapHandlers getEditButton() {
+    	return this.editButton;
+	}
+
+	@Override
+    public HasTapHandlers getSaveButton() {
+    	return this.saveButton;
+    }
+
+    @Override
+    public HasTapHandlers getDeleteButton() {
+    	return this.deleteButton;
     }
 }

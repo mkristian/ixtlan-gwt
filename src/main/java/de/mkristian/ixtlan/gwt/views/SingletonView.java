@@ -5,11 +5,11 @@ import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 
 public interface SingletonView<T> extends DetailView {
 
-    //void setPresenter( SingletonPresenter<T> presenter );
+    void show();
 
-    void show( T model );
+    void edit();
 
-    void edit( T model );
+    void reset( T model );
 
     boolean isDirty();
 

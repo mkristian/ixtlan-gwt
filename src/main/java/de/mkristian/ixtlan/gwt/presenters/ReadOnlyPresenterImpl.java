@@ -2,7 +2,9 @@ package de.mkristian.ixtlan.gwt.presenters;
 
 import java.util.List;
 
-import de.mkristian.ixtlan.gwt.caches.RemoteReadOnly;
+import com.google.gwt.core.shared.GWT;
+
+import de.mkristian.ixtlan.gwt.caches.Cache;
 import de.mkristian.ixtlan.gwt.models.Identifiable;
 import de.mkristian.ixtlan.gwt.utils.ErrorHandlerWithDisplay;
 import de.mkristian.ixtlan.gwt.views.ReadOnlyListView;
@@ -12,18 +14,19 @@ public class ReadOnlyPresenterImpl<T extends Identifiable>
             extends AbstractPresenter
             implements ReadOnlyPresenter<T> {
 
-    protected final ReadOnlyView<T> view;
-    protected final ReadOnlyListView<T> listView;
-    protected final RemoteReadOnly<T> remote;
+	private final ReadOnlyView<T> view;
+    private final ReadOnlyListView<T> listView;
+    private final Cache<T> cache;
+	private Integer id;
 
     public ReadOnlyPresenterImpl( ErrorHandlerWithDisplay errors,
             ReadOnlyView<T> view, 
             ReadOnlyListView<T> listView, 
-            RemoteReadOnly<T> remote ) {
+            Cache<T> cache ) {
         super(errors);
         this.view = view;
         this.listView = listView;
-        this.remote = remote;
+        this.cache = cache;
     }
 
     public void reset( T model ) {
@@ -35,15 +38,28 @@ public class ReadOnlyPresenterImpl<T extends Identifiable>
     }
 
     public void showAll() {
-        setWidget(listView);
-        remote.retrieveAll();
+    	id = null;
+        setWidget( listView );
+        reset( cache.getOrLoadModels() );
     }
 
     public void show( int id ) {
+    	this.id = id;
         setWidget(view);
-        remote.retrieve( id );
+        reset( cache.getOrLoadModel( id ) );
     }
 
+    @Override
+    public void reload() {
+    	GWT.log( "readonly presenter " + id );
+    	if ( id == null ){
+            reset( cache.getOrLoadModels() );
+    	}
+    	else {
+            reset( cache.getOrLoadModel( id ) );
+    	}
+    }
+    
 	@Override
 	public ReadOnlyView<T> view() {
 		return this.view;
@@ -53,5 +69,4 @@ public class ReadOnlyPresenterImpl<T extends Identifiable>
 	public ReadOnlyListView<T> listView() {
 		return this.listView;
 	}
-
 }

@@ -4,42 +4,47 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
 
 import de.mkristian.ixtlan.gwt.events.ModelEvent;
 import de.mkristian.ixtlan.gwt.events.ModelEventHandler;
 import de.mkristian.ixtlan.gwt.models.Identifiable;
+import de.mkristian.ixtlan.gwt.places.Factory;
 
 
-public abstract class AbstractCache<T extends Identifiable> implements Cache<T> {
+public abstract class AbstractCache<T extends Identifiable>
+		implements Cache<T> {
 
     protected final Store<T> store;
 
-    protected final Remote<T> remote;
+    protected final RemoteReadOnly<T> remote;
+
+	private Factory<T, ?> factory;
     
-    protected AbstractCache(EventBus eventBus, 
-            Store<T> store, Remote<T> remote){
-        this(eventBus, store, remote, null);
+    protected AbstractCache( EventBus eventBus, 
+            Store<T> store,
+            RemoteReadOnly<T> remote,
+            Factory<T, ?> factory ){
+        this( eventBus, store, remote, factory, null );
     }
     
     protected AbstractCache( EventBus eventBus,  
                               Store<T> store, 
-                              Remote<T> remote, 
+                              RemoteReadOnly<T> remote,
+                              Factory<T, ?> factory, 
                               CacheManager manager ) {
+        this.factory = factory;
         if (manager != null){
             manager.addCache(this);
         }
         this.store = store;
         this.remote = remote;
-        eventBus.addHandler(eventType(), new ModelEventHandler<T>() {
+        eventBus.addHandler( factory.eventType(), new ModelEventHandler<T>() {
 
             public void onModelEvent(ModelEvent<T> event) {
                 dispatchModelEvent(event);
             }
         });
     }
-
-    abstract protected Type<ModelEventHandler<T>> eventType();
         
     protected String raw(ModelEvent<T> event){
         return event.getMethod().getResponse().getText();
@@ -90,7 +95,7 @@ public abstract class AbstractCache<T extends Identifiable> implements Cache<T> 
         T model = getModel(id);
         if (model == null){
             remote.retrieve(id);
-            model = remote.newModel();
+            model = factory.newModel();
         }
         return model;
     }
@@ -102,7 +107,7 @@ public abstract class AbstractCache<T extends Identifiable> implements Cache<T> 
     public List<T> getOrLoadModels(){
         List<T> result = getModels();
         if( result == null ){
-            remote.retrieveAll();
+			remote.retrieveAll();
         }
         return result;
     }

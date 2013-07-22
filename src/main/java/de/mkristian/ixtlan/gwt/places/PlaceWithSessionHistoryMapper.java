@@ -26,6 +26,8 @@ public abstract class PlaceWithSessionHistoryMapper implements PlaceHistoryMappe
                     case DESTROY:
                         currentUser = null;
                         break;
+                    default:
+                    	break;
                 }
                 
             }

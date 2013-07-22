@@ -11,8 +11,6 @@ public interface Remote<T extends Identifiable> extends RemoteReadOnly<T> {
     void fireUpdate(Method method, T model);
 
     void fireDelete(Method method, T model);
-
-    T newModel();
     
     void create(T model);
     

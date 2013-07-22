@@ -5,11 +5,12 @@ import java.util.List;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 
-import de.mkristian.ixtlan.gwt.events.ModelEvent;
 import de.mkristian.ixtlan.gwt.events.ModelEvent.Action;
 import de.mkristian.ixtlan.gwt.models.Identifiable;
+import de.mkristian.ixtlan.gwt.places.Factory;
 import de.mkristian.ixtlan.gwt.utils.NetworkIndicator;
 
 
@@ -18,41 +19,45 @@ public abstract class AbstractRemote<T extends Identifiable>
 
     protected final EventBus eventBus;
     protected final NetworkIndicator networkIndicator;
+    protected final Factory<T, ?> factory;
     
     protected AbstractRemote(EventBus eventBus,
-                    NetworkIndicator networkIndicator){
+                    NetworkIndicator networkIndicator,
+                    Factory<T, ?> factory ) {
         this.eventBus = eventBus;
         this.networkIndicator = networkIndicator;
+        this.factory = factory;
     }
     
-    public void fireCreate(Method method, T model){
+    public void fireCreate( Method method, T model ){
         networkIndicator.finished();
-        eventBus.fireEvent(newEvent(method, model, Action.CREATE));
+        eventBus.fireEvent( factory.newEvent( method, model, Action.CREATE ) );
     }
 
-    public void fireRetrieve(Method method, List<T> models){
+    public void fireRetrieve( Method method, List<T> models ){
         networkIndicator.finished();
-        eventBus.fireEvent(newEvent(method, models, Action.LOAD));
+        eventBus.fireEvent( factory.newEvent( method, models, Action.LOAD ) );
     }
 
-    public void fireRetrieve(Method method, T model){
+    public void fireRetrieve( Method method, T model ){
         networkIndicator.finished();
-        eventBus.fireEvent(newEvent(method, model, Action.LOAD));
+        eventBus.fireEvent( factory.newEvent( method, model, Action.LOAD ) );
     }
 
-    public void fireUpdate(Method method, T model){
+    public void fireUpdate( Method method, T model ){
         networkIndicator.finished();
-        eventBus.fireEvent(newEvent(method, model, Action.UPDATE));
+        eventBus.fireEvent( factory.newEvent( method, model, Action.UPDATE ) );
     }
 
-    public void fireDelete(Method method, T model){
+    public void fireDelete( Method method, T model ){
         networkIndicator.finished();
-        eventBus.fireEvent(newEvent(method, model, Action.DESTROY));
+        GWT.log( "Abstraactremote" + model );
+        eventBus.fireEvent( factory.newEvent( method, model, Action.DESTROY ) );
     }
 
-    public void fireError(Method method, Throwable e){
+    public void fireError( Method method, Throwable e ){
         networkIndicator.finished();
-        eventBus.fireEvent(newEvent(method, e));
+        eventBus.fireEvent( factory.newEvent( method, e ) );
     }
 
     protected MethodCallback<T> newCreateCallback() {
@@ -125,7 +130,28 @@ public abstract class AbstractRemote<T extends Identifiable>
         };
     }
 
-    abstract protected ModelEvent<T> newEvent(Method method, List<T> models, Action action);
-    abstract protected ModelEvent<T> newEvent(Method method, T model, Action action);
-    abstract protected ModelEvent<T> newEvent(Method method, Throwable e);
+	@Override
+    public void update( T model ) {
+        networkIndicator.saving();
+    }
+
+    @Override
+    public void delete( T model ) {
+        networkIndicator.deleting();
+    }
+
+	@Override
+	public void retrieve( int id ) {
+        networkIndicator.loading();		
+	}
+
+	@Override
+	public void retrieveAll() {
+        networkIndicator.loading();		
+	}
+
+	@Override
+	public void create( T model ) {
+        networkIndicator.saving();		
+	}
 }

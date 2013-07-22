@@ -1,23 +1,32 @@
 package de.mkristian.ixtlan.gwt.views;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 
 import de.mkristian.ixtlan.gwt.models.Identifiable;
-import de.mkristian.ixtlan.gwt.presenters.CRUDPresenter;
+import de.mkristian.ixtlan.gwt.places.RestfulActionEnum;
 
-public interface CRUDView<T extends Identifiable,
-                            S extends CRUDPresenter<T>>
-            extends IsWidget {
+public interface CRUDView<T extends Identifiable>
+            extends DetailView {
 
-    void setPresenter(S presenter);
+    void create(RestfulActionEnum permission);
 
-    void show(T model);
+    void show(RestfulActionEnum permission);
 
-    void edit(T model);
+    void edit(RestfulActionEnum permission);
 
-    void reset(T model);
-
-    void showNew();
+    void reset( T model );
 
     boolean isDirty();
+
+    T flush();
+	
+	HasTapHandlers getCreateButton();
+	
+	HasTapHandlers getCancelButton();
+
+	HasTapHandlers getEditButton();
+
+	HasTapHandlers getSaveButton();
+
+	HasTapHandlers getDeleteButton();
 }

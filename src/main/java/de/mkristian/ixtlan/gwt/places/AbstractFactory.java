@@ -7,18 +7,23 @@ public abstract class AbstractFactory<R extends Identifiable,
         implements Factory<R, S>{
 
     @Override
-    public S newRestfulPlace(RestfulAction action) {
+    public S newRestfulPlace( RestfulAction action ) {
         return newRestfulPlace( 0, null, action );
     }
 
     @Override
-    public S newRestfulPlace(int id, RestfulAction action) {
+    public S newRestfulPlace( int id, RestfulAction action ) {
         return newRestfulPlace( id, null, action );
     }
 
     @Override
-    public S newRestfulPlace(R model, RestfulAction action) {
-        return newRestfulPlace( model.getId(), model, action );
+    public S newRestfulPlace( R model, RestfulAction action ) {
+    	if ( model == null ) {
+    		return newRestfulPlace( 0, model, action );
+    	}
+    	else {
+    		return newRestfulPlace( model.getId(), model, action );
+    	}
     }
 
     @Override

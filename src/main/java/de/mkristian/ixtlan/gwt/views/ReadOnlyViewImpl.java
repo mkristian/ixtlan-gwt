@@ -2,6 +2,7 @@ package de.mkristian.ixtlan.gwt.views;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBar;
 
 import de.mkristian.ixtlan.gwt.models.Identifiable;
 import de.mkristian.ixtlan.gwt.ui.EnabledEditor;
@@ -18,8 +19,13 @@ public abstract class ReadOnlyViewImpl<T extends Identifiable>
         this.editor = editor;
         this.editorDriver = driver;
         this.editorDriver.initialize( editor );
-		actionButton.setVisible( true );
+		listAllButton.setVisible( true );
+		
+        ButtonBar footer = new ButtonBar();     
+        footer.add( reloadButton );
+        
         setWidget( editor );
+        main.add( footer );;
     }
 
     public void show( T model ) {

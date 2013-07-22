@@ -1,8 +1,9 @@
 package de.mkristian.ixtlan.gwt.views;
 
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.MGWT;
@@ -11,6 +12,10 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
+import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.NewIconButton;
+import com.googlecode.mgwt.ui.client.widget.buttonbar.RefreshButton;
+import com.googlecode.mgwt.ui.client.widget.tabbar.TabPanel.TabBar;
 
 public class DetailViewImpl implements DetailView {
 
@@ -19,7 +24,9 @@ public class DetailViewImpl implements DetailView {
 	protected HeaderPanel headerPanel;
 	protected HeaderButton backButton;
     protected HeaderButton mainButton;
-	protected HeaderButton actionButton;
+	protected HeaderButton listAllButton;
+	protected ButtonBase newButton;
+	protected ButtonBase reloadButton;
 	protected HeaderButton logoutButton;
 	protected final HTML title = new HTML();
 
@@ -35,6 +42,11 @@ public class DetailViewImpl implements DetailView {
 		backButton.setBackButton( true );
 		backButton.setVisible( !MGWT.getOsDetection().isAndroid() );
 
+		newButton = new NewIconButton();
+        newButton.setVisible( false );
+
+		reloadButton = new RefreshButton();
+		
         logoutButton = new HeaderButton();
         logoutButton.setText( "Logout" );
         logoutButton.setRoundButton( true );
@@ -42,25 +54,35 @@ public class DetailViewImpl implements DetailView {
 		mainButton = new HeaderButton();
 		mainButton.setRoundButton( true );
 
-		actionButton = new HeaderButton();
-		actionButton.setRoundButton( true );
-		actionButton.setVisible( false );
+		listAllButton = new HeaderButton();
+		listAllButton.setText( "List All" );
+		listAllButton.setRoundButton( true );
+		listAllButton.setVisible( false );
 
-		FlowPanel left = new FlowPanel();
+		Panel left = new HorizontalPanel();
 		if ( !MGWT.getOsDetection().isPhone() ) {
 			left.add( mainButton );
+			left.add( listAllButton );
 			mainButton.addStyleName( MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly() );
 		} else {
 			left.add( backButton );
+			left.add( listAllButton );
 		}
-		left.add( actionButton );
-		headerPanel.setLeftWidget( left );
+		headerPanel.setLeftWidget( left );		
 		headerPanel.setRightWidget( logoutButton );
 
 		main.add( headerPanel );
+        TabBar tabs = createTabBar();
+        if ( tabs != null ) {
+        	main.add( tabs );
+        }
 		main.add( scrollPanel );
 	}
 
+    protected TabBar createTabBar(){
+    	return null;
+    }
+    
 	protected void setWidget( Widget widget ){
 	    scrollPanel.setWidget( widget );
 	}
@@ -80,6 +102,16 @@ public class DetailViewImpl implements DetailView {
 		return backButton;
 	}
 
+	@Override
+	public HasTapHandlers getNewButton() {
+		return newButton;
+	}
+	
+	@Override
+	public HasTapHandlers getReloadButton() {
+		return reloadButton;
+	}
+	
 	@Override
 	public HasTapHandlers getBackbutton() {
 		return backButton;
@@ -101,12 +133,12 @@ public class DetailViewImpl implements DetailView {
 	}
 
 	@Override
-	public HasTapHandlers getActionButton() {
-		return actionButton;
+	public HasTapHandlers getListAllButton() {
+		return listAllButton;
 	}
 
 	@Override
-	public HasText getActionButtonText() {
-		return actionButton;
+	public HasText getListAllButtonText() {
+		return listAllButton;
 	}
 }

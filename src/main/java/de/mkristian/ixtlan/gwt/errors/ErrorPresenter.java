@@ -10,10 +10,11 @@ import de.mkristian.ixtlan.gwt.utils.ErrorHandlerWithDisplay;
 public class ErrorPresenter extends ReadOnlyPresenterImpl<Error> {
 
 	@Inject
-	public ErrorPresenter(ErrorHandlerWithDisplay errors,
-			ErrorView view, ErrorListView listView,
-			ErrorRemoteReadOnly remote) {
-		super(errors, view, listView, remote);
+	public ErrorPresenter( ErrorHandlerWithDisplay errors,
+			ErrorView view, 
+			ErrorListView listView,
+			ErrorCache cache ) {
+		super( errors, view, listView, cache );
 	}
 	
 }
