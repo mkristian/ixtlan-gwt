@@ -5,7 +5,7 @@ import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.EDIT;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.HeaderButton;
+import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBar;
 import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBarSpacer;
 
@@ -18,10 +18,9 @@ public abstract class SingletonViewImpl<T>
 	extends DetailViewImpl
 	implements SingletonView<T> {
 
-    //private final HeaderButton reloadButton;
-    private final HeaderButton editButton;
-    private final HeaderButton cancelButton;
-    private final HeaderButton saveButton;
+    private final Button editButton;
+    private final Button cancelButton;
+    private final Button saveButton;
 
     private final EnabledEditor<T> editor;
     
@@ -39,13 +38,13 @@ public abstract class SingletonViewImpl<T>
         this.editorDriver = driver;
         this.editorDriver.initialize( editor );
         
-        editButton = new HeaderButton();
+        editButton = new Button();
         editButton.setText( "Edit" );
         
-        saveButton = new HeaderButton();
+        saveButton = new Button();
         saveButton.setText( "Save" );
         
-        cancelButton = new HeaderButton();
+        cancelButton = new Button();
         cancelButton.setText( "Cancel" );
 
         ButtonBar footer = new ButtonBar();

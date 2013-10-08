@@ -3,7 +3,7 @@ package de.mkristian.ixtlan.gwt.views;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.HeaderButton;
+import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBar;
 import com.googlecode.mgwt.ui.client.widget.buttonbar.ButtonBarSpacer;
@@ -33,16 +33,16 @@ public abstract class CRUDViewImpl<T extends Identifiable>
         this.editorDriver.initialize( editor );
         
         // setup widget
-        createButton = new HeaderButton();
+        createButton = new Button();
         createButton.setText( "Create" );
 
-        cancelButton = new HeaderButton();
+        cancelButton = new Button();
         cancelButton.setText( "Cancel" );
 
-        editButton = new HeaderButton();
+        editButton = new Button();
         editButton.setText( "Edit" );
         
-        saveButton = new HeaderButton();
+        saveButton = new Button();
         saveButton.setText( "Save" );
         
         deleteButton = new TrashButton();
