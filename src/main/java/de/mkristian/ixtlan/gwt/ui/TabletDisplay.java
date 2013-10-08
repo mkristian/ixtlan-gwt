@@ -19,6 +19,9 @@ import com.googlecode.mgwt.ui.client.layout.OrientationRegionHandler;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
 
+import de.mkristian.ixtlan.gwt.menu.Item;
+import de.mkristian.ixtlan.gwt.menu.MenuView;
+
 @Singleton
 public class TabletDisplay {
 
