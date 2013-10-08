@@ -13,4 +13,7 @@ public interface IxtlanGWTClientBundle extends ClientBundle  {
     @Source("view.css")
     ViewCss getViewCss();
     
+    @Source("tabbar.css")
+    TabBarButtonCss getTabBarButtonCss();
+
 }
