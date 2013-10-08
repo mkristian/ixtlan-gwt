@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.mkristian.ixtlan.gwt.ui;
+package de.mkristian.ixtlan.gwt.menu;
 
 import java.util.List;
 
@@ -28,6 +28,10 @@ import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
  */
 @ImplementedBy( MenuViewImpl.class )
 public interface MenuView extends IsWidget {
+
+    public void setTitle(String text);
+
+    public void setRightButtonText(String text);
 
 	public HasCellSelectedHandler getList();
 

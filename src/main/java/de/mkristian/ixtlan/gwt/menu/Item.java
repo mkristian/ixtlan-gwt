@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.mkristian.ixtlan.gwt.ui;
+package de.mkristian.ixtlan.gwt.menu;
 
 import de.mkristian.ixtlan.gwt.places.RestfulAction;
 import de.mkristian.ixtlan.gwt.places.RestfulPlace;
@@ -32,6 +32,7 @@ public class Item {
 	public Item( String displayString ) {
         this( displayString, null, null );
     }
+
     public Item( String displayString, 
             RestfulPlace<?,?> place ) {
         this( displayString, place, place.action );
