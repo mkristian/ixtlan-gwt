@@ -104,18 +104,18 @@ public class Session {
             Set<String> actions = new TreeSet<String>();
             for(Action a: p.actions){
                 actions.add(a.name);
-                if (a.associations != null && !p.deny){
+                if (a.associations != null && p.allow){
                     addAssociation(a.associations, key(p.resource, a.name));
                 }
             }
             if (p.associations != null){
                 addAssociation(p.associations, p.resource);
             }
-            if(p.deny){
-                deny.put(p.resource, actions);
+            if(p.allow){
+                allow.put(p.resource, actions);
             }
             else{
-                allow.put(p.resource, actions);
+                deny.put(p.resource, actions);
             }
         }
     }
