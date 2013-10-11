@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.CellList;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
@@ -41,7 +42,8 @@ import de.mkristian.ixtlan.gwt.ui.BasicCell;
 @Singleton
 public class MenuViewImpl implements MenuView {
 
-    private final HeaderButton forwardButton;
+    private final HeaderButton leftButton;
+    private final HeaderButton rightButton;
     private final HeaderPanel headerPanel;
 	private final LayoutPanel main;
 	private final CellList<Item> cellList;
@@ -51,13 +53,21 @@ public class MenuViewImpl implements MenuView {
 	@Inject
 	public MenuViewImpl( final Guard guard ) {
 	    this.guard = guard;
-		this.main = new LayoutPanel();
+		this.main = new LayoutPanel();     
+	
 		headerPanel = new HeaderPanel();
+		
+		leftButton = new HeaderButton();
 
-        forwardButton = new HeaderButton();
-        forwardButton.setForwardButton(true);
+        headerPanel.setLeftWidget(leftButton);
+        leftButton.setBackButton(true);
+        leftButton.setVisible(!MGWT.getOsDetection().isAndroid());
+
+        
+        rightButton = new HeaderButton();
+        rightButton.setForwardButton(true);
         if (MGWT.getOsDetection().isPhone()) {
-            headerPanel.setRightWidget(forwardButton);
+            headerPanel.setRightWidget(rightButton);
         }
         main.add(headerPanel);
         
@@ -83,6 +93,10 @@ public class MenuViewImpl implements MenuView {
 
 	}
 
+	protected void hideHeaderBackButton(){
+	    leftButton.setVisible( false );
+	}
+	
     protected void clearItems(){
         items.clear();
     }
@@ -100,13 +114,16 @@ public class MenuViewImpl implements MenuView {
     @Override
     public void setTitle(String text) {
         headerPanel.setCenter(text);
+    }
 
+    @Override
+    public void setLeftButtonText(String text) {
+        leftButton.setText(text);
     }
     
     @Override
     public void setRightButtonText(String text) {
-        forwardButton.setText(text);
-
+        rightButton.setText(text);
     }
 
 	@Override
@@ -131,4 +148,14 @@ public class MenuViewImpl implements MenuView {
 	public void setSelectedIndex( int index, boolean selected ) {
 		cellList.setSelectedIndex( index, selected );
 	}
+
+    @Override
+    public HasTapHandlers getLeftButton(){
+        return this.leftButton;
+    }
+
+    @Override
+    public HasTapHandlers getRightButton(){
+        return this.rightButton;
+    }
 }

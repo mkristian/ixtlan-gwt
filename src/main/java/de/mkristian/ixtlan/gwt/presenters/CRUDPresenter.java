@@ -18,15 +18,18 @@ public interface CRUDPresenter<T extends Identifiable> extends Presenter {
     
     void create( T model );
 
-    void save( T model );
+    void update( T model );
 
     void delete( T model );
 
     void reset( T model );
     void reset( List<T> models );
 
-    void showNew();
+    //void showNew();
+    void showNew( T model );
+    
     void showAll();
+    
     void show( int id );
     void show( T model );
 

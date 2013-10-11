@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.ImplementedBy;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
 
 
@@ -31,8 +32,14 @@ public interface MenuView extends IsWidget {
 
     public void setTitle(String text);
 
+    public void setLeftButtonText(String text);
+
     public void setRightButtonText(String text);
 
+    public HasTapHandlers getLeftButton();
+    
+    public HasTapHandlers getRightButton();
+    
 	public HasCellSelectedHandler getList();
 
 	public List<Item> renderItems();

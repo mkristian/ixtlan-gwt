@@ -1,13 +1,11 @@
 package de.mkristian.ixtlan.gwt.presenters;
 
-import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.NEW;
 import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.DESTROY;
 import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.EDIT;
+import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.NEW;
 import static de.mkristian.ixtlan.gwt.places.RestfulActionEnum.SHOW;
 
 import java.util.List;
-
-import com.google.gwt.core.shared.GWT;
 
 import de.mkristian.ixtlan.gwt.caches.Cache;
 import de.mkristian.ixtlan.gwt.caches.Remote;
@@ -24,12 +22,12 @@ public class CRUDPresenterImpl<T extends Identifiable>
         implements CRUDPresenter<T> {
 
     private final CRUDView<T> view;
-    private final CRUDListView<T> listView;
-    private final Cache<T> cache;
-    private final Remote<T> remote;
+    protected final CRUDListView<T> listView;
+    protected final Cache<T> cache;
+    protected final Remote<T> remote;
 	private final Factory<T, ?> factory;
 	private final Guard guard;
-    private boolean isEditing = false;
+    protected boolean isEditing = false;
     private T model;
 	private RestfulActionEnum permission;
 
@@ -81,24 +79,28 @@ public class CRUDPresenterImpl<T extends Identifiable>
         view.reset( model );
     }
 
-    @Override
-    public void edit( T model ) {
+    protected T retrieveModel( T model ){
         T m = cache.getOrLoadModel( model.getId() );
-        doEdit( m == null ? model : m );
+        return m == null ? model : m;
     }
     
     @Override
-    public void showNew() {
+    public void edit( T model ) {
+        doEdit( retrieveModel( model ) );
+    }
+
+    @Override
+    public void showNew( T model ) {
+        this.model = model == null ? factory.newModel() : model;
         isEditing = true;
         setWidget( view );
         view.create( permission() );
-        view.reset( factory.newModel() );
+        view.reset( this.model );
     }
 
     @Override
     public void show(T model) {
-        T m = cache.getOrLoadModel( model.getId() );
-        doShow( m == null ? model : m );
+        doShow( retrieveModel( model ) );
     }
 
     private void doShow(T model) {
@@ -163,7 +165,7 @@ public class CRUDPresenterImpl<T extends Identifiable>
     }
     
     @Override
-    public void save(T model) { 
+    public void update(T model) { 
         this.model = model;
         isEditing = false;
         remote.update( model );
@@ -176,7 +178,6 @@ public class CRUDPresenterImpl<T extends Identifiable>
 
     @Override
     public void reload() {
-    	GWT.log( "crudpresenter " + model);
     	if ( model == null ){
     		remote.retrieveAll();
     	}

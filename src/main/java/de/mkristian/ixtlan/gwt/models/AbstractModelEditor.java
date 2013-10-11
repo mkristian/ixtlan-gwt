@@ -33,6 +33,11 @@ public class AbstractModelEditor<T extends AbstractModel>
         this.css = css;
     }
 
+    protected boolean isNew()
+    {
+        return id.getValue() == null ? true : 
+            ( id.getValue() == 0 ? false : true );
+    }
     
     @Override
 	protected void initWidget( Widget widget ) {

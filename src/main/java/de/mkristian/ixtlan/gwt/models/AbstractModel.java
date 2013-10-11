@@ -36,6 +36,10 @@ public abstract class AbstractModel implements HasToDisplay, Identifiable {
         this.modifiedBy = modifiedBy;
     }
 
+    public boolean isNew(){
+        return id == 0;
+    }
+    
     public int getId(){
       return id;
     }
@@ -50,5 +54,16 @@ public abstract class AbstractModel implements HasToDisplay, Identifiable {
 
     public User getModifiedBy(){
       return modifiedBy;
+    }
+    
+    @Override
+    public int hashCode(){
+        return (getClass().getName() + id).hashCode();
+    }
+    
+    @Override
+    public boolean equals( Object other ){
+        return other.getClass() == getClass() &&
+                ((AbstractModel) other).id == id;
     }
 }

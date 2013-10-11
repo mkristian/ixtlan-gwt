@@ -16,6 +16,7 @@ import de.mkristian.ixtlan.gwt.presenters.CRUDPresenter;
 import de.mkristian.ixtlan.gwt.session.SessionFacade;
 import de.mkristian.ixtlan.gwt.views.CRUDListView;
 import de.mkristian.ixtlan.gwt.views.CRUDView;
+import de.mkristian.ixtlan.gwt.views.DetailView;
 import de.mkristian.ixtlan.gwt.views.ModelButton;
 
 public abstract class AbstractCRUDActivity<T extends Identifiable> 
@@ -40,7 +41,7 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
         this.places = places;
         this.factory = factory;
     }
-
+    
     @Override
     public void start( AcceptsOneWidget display, EventBus eventBus ) {
     	super.start( display, eventBus );
@@ -64,19 +65,18 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
                         		RestfulActionEnum.SHOW ) );
                         break;
                     case DESTROY:
-                        places.goTo( factory.newRestfulPlace( RestfulActionEnum.INDEX ) );
+                        goToIndexPlace( event.getModel() );
                         presenter.listView().remove( event.getModel() );
                         break;
                     case ERROR:
                         presenter.onError( event.getMethod(), 
-                                    event.getThrowable() );
+                                           event.getThrowable() );
                         break;
                     default:
                         presenter.unknownAction( event.getAction() );
                         break;
                 }
-            }
-    
+            }    
         });
         switch( RestfulActionEnum.valueOf( place.action ) ){
             case SHOW:
@@ -89,8 +89,8 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
                 }
                 break;
             case NEW:
+                presenter.showNew( place.model );
                 startView();
-                presenter.showNew();
                 break;
             case EDIT:
                 startView();
@@ -103,7 +103,7 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
                 break;
             case INDEX:
                 startListView();
-                presenter.showAll();
+                doShowAll();
                 break;
             default:
                 presenter.unknownAction( place.action );
@@ -111,16 +111,31 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
         }
     }
 
-	private void startListView() {
+    protected void doShowAll()
+    {
+        presenter.showAll();
+    }
+    
+    protected void goToIndexPlace( T model )
+    {
+        places.goTo( factory.newRestfulPlace( RestfulActionEnum.INDEX ) );
+    }
+
+    protected void goToNewPlace()
+    {
+        places.goTo( factory.newRestfulPlace( RestfulActionEnum.NEW ) );
+    }
+    
+	protected void startListView() {
 		final CRUDListView<T> view = presenter.listView();
         
         addHandlerRegistration( view.getNewButton().addTapHandler( new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-		        places.goTo( factory.newRestfulPlace( RestfulActionEnum.NEW ) );
-			}
-		} ) );
+        	
+        	@Override
+        	public void onTap(TapEvent event) {
+                goToNewPlace();
+        	}
+        } ) );
 
 
         addHandlerRegistration( view.getReloadButton().addTapHandler( new TapHandler() {
@@ -143,8 +158,9 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
                 		break;
                 	case EDIT:
                     case SHOW:
-                        places.goTo( factory.newRestfulPlace( button.model,
-                        		button.action ) );
+                        places.goTo( factory
+                                         .newRestfulPlace( button.model,
+                                                           button.action ) );
                         break;
                     default:
                     	presenter.unknownAction( button.action );
@@ -153,16 +169,16 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
 		} ) );
 	}
 
-	private void startView() {
+    protected void startView() {
 		final CRUDView<T> view = presenter.view();
         
         addHandlerRegistration( view.getListAllButton().addTapHandler(new TapHandler() {
-
-    	      @Override
-    	      public void onTap(TapEvent event) {
-    	    	  places.goTo( factory.newRestfulPlace( RestfulActionEnum.INDEX ) );				
-    	      }
-    	} ) );
+        
+              @Override
+              public void onTap(TapEvent event) {
+                  goToIndexPlace( presenter.current() );
+              }
+        } ) );
 
         addHandlerRegistration( view.getReloadButton().addTapHandler( new TapHandler() {
 			
@@ -172,14 +188,13 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
 			}
 		} ) );
         
-		addHandlerRegistration( view.getNewButton().addTapHandler( new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-		        places.goTo( factory.newRestfulPlace( presenter.current(),
-		                RestfulActionEnum.NEW ) );
-			}
-		} ) );
+        addHandlerRegistration( view.getNewButton().addTapHandler( new TapHandler() {
+        	
+        	@Override
+        	public void onTap(TapEvent event) {
+                goToNewPlace();
+        	}
+        } ) );
 
         addHandlerRegistration( view.getCreateButton().addTapHandler( new TapHandler() {
 			
@@ -217,7 +232,7 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
 			
 			@Override
 			public void onTap(TapEvent event) {
-		        presenter.save( view.flush() );
+		        presenter.update( view.flush() );
 			}
 		} ) );
         
