@@ -97,7 +97,7 @@ public class BrowserStore<T extends Identifiable> implements Store<T>{
     }
     
     public void update(T model, String json) {
-        setStoreItem(storeKey(model), json);
+        setStoreItem( storeKey( model ), json );
     }
 
     public void purgeAll() {

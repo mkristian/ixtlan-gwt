@@ -46,7 +46,7 @@ public abstract class AbstractCache<T extends Identifiable>
         });
     }
         
-    protected String raw(ModelEvent<T> event){
+    protected String raw( ModelEvent<T> event ){
         return event.getMethod().getResponse().getText();
     }
 

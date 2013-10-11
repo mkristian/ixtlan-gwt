@@ -68,7 +68,6 @@ public abstract class AbstractRemote<T extends Identifiable>
             }
 
             public void onFailure(Method method, Throwable exception) {
-                // TODO maybe propagate the exception or do nothing
                 fireError(method, exception);
             }
         };
@@ -82,7 +81,6 @@ public abstract class AbstractRemote<T extends Identifiable>
             }
 
             public void onFailure(Method method, Throwable exception) {
-                // TODO maybe propagate the exception or do nothing
                 fireError(method, exception);
             }
         };
@@ -96,7 +94,6 @@ public abstract class AbstractRemote<T extends Identifiable>
             }
 
             public void onFailure(Method method, Throwable exception) {
-                // TODO maybe propagate the exception or do nothing
                 fireError(method, exception);
             }
         };
@@ -110,7 +107,6 @@ public abstract class AbstractRemote<T extends Identifiable>
             }
 
             public void onFailure(Method method, Throwable exception) {
-                // TODO maybe propagate the exception or do nothing
                 fireError(method, exception);
             }
         };
@@ -124,7 +120,6 @@ public abstract class AbstractRemote<T extends Identifiable>
             }
 
             public void onFailure( Method method, Throwable exception ) {
-                // TODO maybe propagate the exception or do nothing
                 fireError(method, exception);
             }
         };

@@ -56,6 +56,7 @@ public class Item {
 	public RestfulPlace<?,?> getRestfulPlace() {
 		return place;
 	}
+
     public RestfulAction getRestfulAction() {
         return action;
     }
