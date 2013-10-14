@@ -11,7 +11,7 @@ public abstract class RestfulPlaceTokenizer<P extends RestfulPlace<?, ?>> implem
         public final int id;
         public final String identifier;
         public final RestfulAction action;
-        Token(RestfulAction action){
+        public Token(RestfulAction action){
             this(null, action);
         }
 

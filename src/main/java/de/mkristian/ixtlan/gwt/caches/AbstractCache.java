@@ -8,7 +8,8 @@ import com.google.gwt.event.shared.EventBus;
 import de.mkristian.ixtlan.gwt.events.ModelEvent;
 import de.mkristian.ixtlan.gwt.events.ModelEventHandler;
 import de.mkristian.ixtlan.gwt.models.Identifiable;
-import de.mkristian.ixtlan.gwt.places.Factory;
+import de.mkristian.ixtlan.gwt.readonly.ReadonlyFactory;
+import de.mkristian.ixtlan.gwt.readonly.ReadonlyRemote;
 
 
 public abstract class AbstractCache<T extends Identifiable>
@@ -16,21 +17,21 @@ public abstract class AbstractCache<T extends Identifiable>
 
     protected final Store<T> store;
 
-    protected final RemoteReadOnly<T> remote;
+    protected final ReadonlyRemote<T> remote;
 
-	private Factory<T, ?> factory;
+	private ReadonlyFactory<T, ?> factory;
     
     protected AbstractCache( EventBus eventBus, 
             Store<T> store,
-            RemoteReadOnly<T> remote,
-            Factory<T, ?> factory ){
+            ReadonlyRemote<T> remote,
+            ReadonlyFactory<T, ?> factory ){
         this( eventBus, store, remote, factory, null );
     }
     
     protected AbstractCache( EventBus eventBus,  
                               Store<T> store, 
-                              RemoteReadOnly<T> remote,
-                              Factory<T, ?> factory, 
+                              ReadonlyRemote<T> remote,
+                              ReadonlyFactory<T, ?> factory, 
                               CacheManager manager ) {
         this.factory = factory;
         if (manager != null){

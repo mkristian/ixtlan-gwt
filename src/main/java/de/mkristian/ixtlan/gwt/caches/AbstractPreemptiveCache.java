@@ -6,20 +6,21 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 
 import de.mkristian.ixtlan.gwt.models.Identifiable;
-import de.mkristian.ixtlan.gwt.places.Factory;
+import de.mkristian.ixtlan.gwt.readonly.ReadonlyFactory;
+import de.mkristian.ixtlan.gwt.readonly.ReadonlyRemote;
 
 public abstract class AbstractPreemptiveCache<T extends Identifiable>
 		extends AbstractCache<T> {
     
     protected AbstractPreemptiveCache(EventBus eventBus, 
-            Store<T> store, RemoteReadOnly<T> remote,
-            Factory<T, ?> factory ){
+            Store<T> store, ReadonlyRemote<T> remote,
+            ReadonlyFactory<T, ?> factory ){
         this( eventBus, store, remote, factory, null );
     }
     
     protected AbstractPreemptiveCache(EventBus eventBus,  
-            Store<T> store, RemoteReadOnly<T> remote,
-            Factory<T, ?> factory,
+            Store<T> store, ReadonlyRemote<T> remote,
+            ReadonlyFactory<T, ?> factory,
             CacheManager manager){
         super(eventBus, store, remote, factory, manager);
     }

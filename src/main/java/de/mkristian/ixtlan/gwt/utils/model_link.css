@@ -1,0 +1,10 @@
+
+.ixtlan-ModelLink .ixtlan-ModelLink-box {
+color: darkblue;
+text-decoration: underline;
+}
+
+.ixtlan-ModelLink .ixtlan-ModelLink-box:hover {
+color: darkgreen;
+}
+
