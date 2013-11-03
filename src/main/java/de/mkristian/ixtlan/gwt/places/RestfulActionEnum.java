@@ -8,8 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public enum RestfulActionEnum implements RestfulAction{
-    NEW("new", false), SHOW("", true), EDIT("edit", false), INDEX("", true), DESTROY("", false);
+
+
+public enum RestfulActionEnum implements RestfulAction {
+    
+    NEW("new", false),
+    SHOW("", true),
+    EDIT("edit", false),
+    INDEX("", true),
+    DESTROY("", false);
 
     private final String token;
 
@@ -29,6 +36,18 @@ public enum RestfulActionEnum implements RestfulAction{
     
     public static RestfulActionEnum valueOf(RestfulAction action){
         return valueOf(action.name());
+    }
+    
+    public static RestfulActionEnum fromToken( String token ){
+        if ( "edit".equals( token ) ){
+            return EDIT;
+        }
+        else if ( "new".equals( token ) ){
+            return NEW;
+        }
+        else {
+            return null;
+        }
     }
 
     public static RestfulAction toRestfulAction(String name){

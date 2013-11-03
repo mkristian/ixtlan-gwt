@@ -36,26 +36,11 @@ public abstract class AbstractCRUDRemote<T extends Identifiable>
         eventBus.fireEvent( factory.newEvent( method, models, Action.LOAD ) );
     }
 
-//    public void fireRetrieve( Method method, T model ){
-//        networkIndicator.finished();
-//        eventBus.fireEvent( factory.newEvent( method, model, Action.LOAD ) );
-//    }
-//
-//    public void fireUpdate( Method method, T model ){
-//        networkIndicator.finished();
-//        eventBus.fireEvent( factory.newEvent( method, model, Action.UPDATE ) );
-//    }
-
     public void fireDelete( Method method, T model ){
         networkIndicator.finished();
         eventBus.fireEvent( factory.newEvent( method, model, Action.DESTROY ) );
     }
 
-//    public void fireError( Method method, Throwable e ){
-//        networkIndicator.finished();
-//        eventBus.fireEvent( factory.newEvent( method, e ) );
-//    }
-//
     protected MethodCallback<T> newCreateCallback() {
         return new MethodCallback<T>() {
 
@@ -68,19 +53,6 @@ public abstract class AbstractCRUDRemote<T extends Identifiable>
             }
         };
     }
-    
-//    protected MethodCallback<T> newRetrieveCallback() {
-//        return new MethodCallback<T>() {
-//
-//            public void onSuccess(Method method, T response) {
-//                fireRetrieve(method, response);
-//            }
-//
-//            public void onFailure(Method method, Throwable exception) {
-//                fireError(method, exception);
-//            }
-//        };
-//    }
 
     protected MethodCallback<List<T>> newRetrieveAllCallback() {
         return new MethodCallback<List<T>>() {
@@ -95,19 +67,6 @@ public abstract class AbstractCRUDRemote<T extends Identifiable>
         };
     }
     
-//    protected MethodCallback<T> newUpdateCallback() {
-//        return new MethodCallback<T>() {
-//
-//            public void onSuccess(Method method, T response) {
-//                fireUpdate(method, response);
-//            }
-//
-//            public void onFailure(Method method, Throwable exception) {
-//                fireError(method, exception);
-//            }
-//        };
-//    }
-    
     protected MethodCallback<Void> newDeleteCallback( final T model ) {
         return new MethodCallback<Void>() {
 
@@ -120,11 +79,6 @@ public abstract class AbstractCRUDRemote<T extends Identifiable>
             }
         };
     }
-//
-//	@Override
-//    public void update( T model ) {
-//        networkIndicator.saving();
-//    }
 
     @Override
     public void delete( T model ) {

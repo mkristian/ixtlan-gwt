@@ -18,32 +18,14 @@ public abstract class CRUDViewImpl<T extends Identifiable>
             extends SingletonViewImpl<T>
             implements CRUDView<T> {
 
-//    private final ButtonBase editButton = new Button();
-//    private final ButtonBase cancelButton = new Button();
     protected ButtonBase createButton;
-//    private final ButtonBase saveButton = new Button();
     protected ButtonBase deleteButton;
 
-//    private final EnabledEditor<T> editor;
-//    private final SimpleBeanEditorDriver<T, Editor<T>> editorDriver;
-//
     public CRUDViewImpl( final EnabledEditor<T> editor,
             final SimpleBeanEditorDriver<T, Editor<T>> driver ) {
         super( editor, driver );
-//        this.editor = editor;  
-//        this.editorDriver = driver;
-//        this.editorDriver.initialize( editor );
-        
+
         createButton.setText( "Create" );
-//
-//        cancelButton.setText( "Cancel" );
-//
-//        editButton.setText( "Edit" );
-//        
-//        saveButton.setText( "Save" );
-//        
-//        setWidget( editor );
-//        main.add( createFooter() );
         
 		listAllButton.setVisible( true );
         newButton.setVisible( true );
@@ -68,14 +50,9 @@ public abstract class CRUDViewImpl<T extends Identifiable>
 
     protected void setupButtons( boolean editable ) {
         super.setupButtons( editable );
-//        reloadButton.setVisible( true );
         newButton.setVisible( true );
         createButton.setVisible( false );
-  //      editButton.setVisible( false );
-    //    saveButton.setVisible( false );
-      //  cancelButton.setVisible( false );
         deleteButton.setVisible( false );
-        //editor.setEnabled( editable );
     }
 
     @Override
@@ -112,7 +89,6 @@ public abstract class CRUDViewImpl<T extends Identifiable>
         setupButtons( true );  
         newButton.setVisible( false );
         reloadButton.setVisible( false );
-//        saveButton.setVisible( false );
         cancelButton.setVisible( true );
         switch( permission ){
         case DESTROY:

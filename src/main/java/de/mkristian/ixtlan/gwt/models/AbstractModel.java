@@ -63,7 +63,8 @@ public abstract class AbstractModel implements HasToDisplay, Identifiable {
     
     @Override
     public boolean equals( Object other ){
-        return other.getClass() == getClass() &&
-                ((AbstractModel) other).id == id;
+        return other != null && 
+               other.getClass() == getClass() &&
+               ((AbstractModel) other).id == id;
     }
 }

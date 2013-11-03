@@ -25,7 +25,7 @@ import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
 
 /**
  * @author Daniel Kurka
- * @author kristian
+ * @author christian
  */
 @ImplementedBy( MenuViewImpl.class )
 public interface MenuView extends IsWidget {

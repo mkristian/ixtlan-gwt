@@ -81,12 +81,7 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
         switch( RestfulActionEnum.valueOf( place.action ) ){
             case SHOW:
                 startView();
-                if ( place.model != null ) {
-                    presenter.show( place.model );
-                }
-                else {
-                    presenter.show( place.id );
-                }
+                doShow();
                 break;
             case NEW:
                 presenter.showNew( place.model );
@@ -111,6 +106,16 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
         }
     }
 
+    protected void doShow()
+    {
+        if ( place.model != null ) {
+            presenter.show( place.model );
+        }
+        else {
+            presenter.show( place.id );
+        }
+    }
+
     protected void doShowAll()
     {
         presenter.showAll();
@@ -125,7 +130,12 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
     {
         places.goTo( factory.newRestfulPlace( RestfulActionEnum.NEW ) );
     }
-    
+
+    protected void reloadAll()
+    {
+        presenter.reload();
+    }
+
 	protected void startListView() {
 		final CRUDListView<T> view = presenter.listView();
         
@@ -142,7 +152,7 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
 			
 			@Override
 			public void onTap(TapEvent event) {
-		        presenter.reload();
+		        reloadAll();
 			}
 		} ) );
         

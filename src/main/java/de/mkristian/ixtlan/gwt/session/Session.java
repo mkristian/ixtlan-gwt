@@ -100,12 +100,17 @@ public class Session {
         allow = new HashMap<String, Set<String>>();
         deny = new HashMap<String, Set<String>>();
         associations = new HashMap<String, Set<String>>();
-        for(Permission p: this.permissions){
+        setupFor(this.permissions);
+    }
+
+    protected void setupFor( Set<Permission> permissions)
+    {
+        for(Permission p: permissions){
             Set<String> actions = new TreeSet<String>();
             for(Action a: p.actions){
-                actions.add(a.name);
+                actions.add(a.name.name());
                 if (a.associations != null && p.allow){
-                    addAssociation(a.associations, key(p.resource, a.name));
+                    addAssociation(a.associations, key(p.resource, a.name.name()));
                 }
             }
             if (p.associations != null){
@@ -116,6 +121,9 @@ public class Session {
             }
             else{
                 deny.put(p.resource, actions);
+            }
+            if (p.children != null ){
+                setupFor( p.children );
             }
         }
     }

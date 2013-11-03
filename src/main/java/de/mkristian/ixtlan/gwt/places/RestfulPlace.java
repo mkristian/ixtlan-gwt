@@ -1,6 +1,11 @@
 package de.mkristian.ixtlan.gwt.places;
 
+
+
 import com.google.gwt.activity.shared.Activity;
+
+import de.mkristian.ixtlan.gwt.models.HasToDisplay;
+
 
 public abstract class RestfulPlace<T, S> extends PlaceWithSession {
 
@@ -12,11 +17,66 @@ public abstract class RestfulPlace<T, S> extends PlaceWithSession {
 
     public final T model;
 
+    private RestfulPlace<?, ?> parent;
+    
     public RestfulPlace(int id, T model, RestfulAction restfulAction, String name) {
         this.action = restfulAction;
         this.id = id;
         this.model = model;
         this.resourceName = name;
+    }
+    
+    public RestfulPlace<?, ?> getParent()
+    {
+        if( this.parent == null ){
+            this.parent = createParentPlace();
+        }
+        return parent;
+    }
+    
+    protected RestfulPlace<?, ?> createParentPlace() {
+        return null;
+    }
+ 
+    public void setParent( RestfulPlace<?, ?> parent )
+    {
+        this.parent = parent;
+    }
+
+    public String token(){
+        StringBuilder buf = new StringBuilder( getParent() == null ? "" : getParent().token() );
+        buf.append( Token2RestfulPlaceMapper.SEPARATOR ).append( resourceName );
+        if ( id > 0 ){
+            buf.append( Token2RestfulPlaceMapper.SEPARATOR ).append( id );
+        }
+        if ( action.token().length() > 0 ){
+            buf.append( Token2RestfulPlaceMapper.SEPARATOR ).append( action.token() );
+        }
+        return buf.toString();
+    }
+    
+    public String title(){
+        // TODO StringBuilder
+        // TODO singular vs plural
+        String title = "";
+        if ( getParent() != null ){
+            title = getParent().title() + " - ";
+        }
+        title += resourceName.substring( 0, 1 ).toUpperCase() + resourceName.substring( 1 );
+        switch( RestfulActionEnum.valueOf( this.action ) ){
+        case INDEX:
+            return title;// + "s";
+        case NEW:
+            return title + " - new Entry";
+        case DESTROY:
+        case EDIT:
+        case SHOW:
+            if ( model != null && model instanceof HasToDisplay ){
+                return title + " - " + ((HasToDisplay) model ).toDisplay();
+            }
+        default:
+            return title;
+        }
     }
     
     public abstract Activity create(S factory);
@@ -64,6 +124,6 @@ public abstract class RestfulPlace<T, S> extends PlaceWithSession {
     @Override
     public String toString() {
         return "Place[action=" + action + ", id=" + id + ", model="
-                + model + ", resourceName=" + resourceName + "]";
+                + model + ", resourceName=" + resourceName + ", parent=" + parent + "]";
     }
 }

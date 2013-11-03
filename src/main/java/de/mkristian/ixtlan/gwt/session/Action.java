@@ -7,6 +7,9 @@ import org.fusesource.restygwt.client.Json.Style;
 
 @Json(style = Style.RAILS)
 public class Action {
-    public String name;
+    static enum CRUD { create, retrieve, update, delete }
+    
+    public CRUD name;
+    //public String verb;
     public Set<String> associations;
 }

@@ -19,7 +19,7 @@ public abstract class AbstractCache<T extends Identifiable>
 
     protected final ReadonlyRemote<T> remote;
 
-	private ReadonlyFactory<T, ?> factory;
+	protected final ReadonlyFactory<T, ?> factory;
     
     protected AbstractCache( EventBus eventBus, 
             Store<T> store,

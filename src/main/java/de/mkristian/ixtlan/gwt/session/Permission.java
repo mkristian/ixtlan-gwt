@@ -11,4 +11,5 @@ public class Permission {
     public boolean allow;
     public Set<Action> actions;
     public Set<String> associations;
+    public Set<Permission> children;
 }

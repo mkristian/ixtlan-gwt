@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.core.shared.GWT;
-
 import de.mkristian.ixtlan.gwt.models.Identifiable;
 
 public class MemoryStore<T extends Identifiable> implements Store<T> {
@@ -48,7 +46,6 @@ public class MemoryStore<T extends Identifiable> implements Store<T> {
     }
 
     public List<T> getAll(){
-    	GWT.log( "Memorystroe " + loaded );
         if ( loaded ){
             List<T> result = new ArrayList<T>();
             for(T item: cache){

@@ -2,7 +2,6 @@ package de.mkristian.ixtlan.gwt.caches;
 
 import java.util.List;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 
 import de.mkristian.ixtlan.gwt.models.Identifiable;
@@ -27,10 +26,9 @@ public abstract class AbstractPreemptiveCache<T extends Identifiable>
     
     public T getOrLoadModel(int id){
         T model = getModel(id);
-        GWT.log( "TODO AbstractPreemptiveCache decide on impl" );
-//        if (model == null){
-//            model = remote.newModel();
-//        }
+        if (model == null){
+            model = factory.newModel();
+        }
         remote.retrieve( id );
         return model;
     }

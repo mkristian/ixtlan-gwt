@@ -11,8 +11,14 @@ import de.mkristian.ixtlan.gwt.models.Identifiable;
 public class BrowserOrMemoryStore<T extends Identifiable> implements Store<T> {
 
     private final Store<T> store;
-    
+    private boolean storeCollections;
+
     public BrowserOrMemoryStore(JsonEncoderDecoder<T> coder, String key){
+        this( coder, key, true );
+    }
+    
+    public BrowserOrMemoryStore(JsonEncoderDecoder<T> coder, String key, boolean storeCollections ){
+        this.storeCollections = storeCollections;
         if ( Storage.isLocalStorageSupported() ){
             store = new BrowserStore<T>(coder, key);
         }
@@ -26,7 +32,9 @@ public class BrowserOrMemoryStore<T extends Identifiable> implements Store<T> {
     }
 
     public void replaceAll(List<T> models, String json) {
-        store.replaceAll(models, json);
+        if ( storeCollections ) {
+            store.replaceAll(models, json);
+        }
     }
 
     public T get(int id) {
@@ -34,7 +42,12 @@ public class BrowserOrMemoryStore<T extends Identifiable> implements Store<T> {
     }
 
     public List<T> getAll() {
-        return store.getAll();
+        if (storeCollections) {
+            return store.getAll();
+        }
+        else {
+            return null;
+        }
     }
 
     public void remove(T model) {

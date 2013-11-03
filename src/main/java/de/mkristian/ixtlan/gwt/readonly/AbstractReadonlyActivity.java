@@ -83,6 +83,11 @@ public abstract class AbstractReadonlyActivity<T extends Identifiable>
         }
     }
 
+    protected void reloadAll()
+    {
+        presenter.reload();
+    }
+    
     protected void doShowAll()
     {
         presenter.showAll();
@@ -128,7 +133,7 @@ public abstract class AbstractReadonlyActivity<T extends Identifiable>
 			
 			@Override
 			public void onTap(TapEvent event) {
-		        presenter.reload();
+		        reloadAll();
 			}
 		} ) );
         addHandlerRegistration( view.getListAllButton().addTapHandler(new TapHandler() {

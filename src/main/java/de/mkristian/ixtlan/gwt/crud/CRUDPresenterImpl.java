@@ -106,7 +106,7 @@ public class CRUDPresenterImpl<T extends Identifiable>
         doShow( retrieveModel( model ) );
     }
 
-    private void doShow(T model) {
+    protected void doShow(T model) {
         this.model = model;
         isEditing = false;
         setWidget( view );
