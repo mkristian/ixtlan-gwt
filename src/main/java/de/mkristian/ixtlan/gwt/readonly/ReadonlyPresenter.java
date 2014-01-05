@@ -12,15 +12,9 @@ public interface ReadonlyPresenter<T extends Identifiable>
 
     ReadonlyListView<T> listView();
 
-//    void reload();
-
-//    void reset( T model );
     void reset( List<T> models );
 
     void showAll();
 
     void show( int id );
-//    void show( T model );
-
-  //  T current();
 }

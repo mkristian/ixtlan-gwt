@@ -72,14 +72,14 @@ public class DetailViewImpl implements DetailView {
 		headerPanel.setRightWidget( logoutButton );
 
 		main.add( headerPanel );
-        TabBar tabs = createTabBar();
+        Widget tabs = createSecondHeaders();
         if ( tabs != null ) {
         	main.add( tabs );
         }
 		main.add( scrollPanel );
 	}
 
-    protected TabBar createTabBar(){
+    protected Widget createSecondHeaders(){
     	return null;
     }
     

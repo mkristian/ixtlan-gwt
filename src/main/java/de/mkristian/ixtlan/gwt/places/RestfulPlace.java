@@ -63,20 +63,22 @@ public abstract class RestfulPlace<T, S> extends PlaceWithSession {
             title = getParent().title() + " - ";
         }
         title += resourceName.substring( 0, 1 ).toUpperCase() + resourceName.substring( 1 );
-        switch( RestfulActionEnum.valueOf( this.action ) ){
-        case INDEX:
-            return title;// + "s";
-        case NEW:
-            return title + " - new Entry";
-        case DESTROY:
-        case EDIT:
-        case SHOW:
-            if ( model != null && model instanceof HasToDisplay ){
-                return title + " - " + ((HasToDisplay) model ).toDisplay();
+        if ( this.action instanceof RestfulActionEnum ) {
+            switch( RestfulActionEnum.valueOf( this.action ) ){
+            case INDEX:
+                return title;// + "s";
+            case NEW:
+                return title + " - new Entry";
+            case DESTROY:
+            case EDIT:
+            case SHOW:
+                if ( model != null && model instanceof HasToDisplay ){
+                    return title + " - " + ((HasToDisplay) model ).toDisplay();
+                }
+            default:
             }
-        default:
-            return title;
         }
+        return title;
     }
     
     public abstract Activity create(S factory);

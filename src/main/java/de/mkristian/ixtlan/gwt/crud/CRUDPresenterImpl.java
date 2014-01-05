@@ -61,6 +61,10 @@ public class CRUDPresenterImpl<T extends Identifiable>
         return model;
     }
 
+    protected void setCurrent( T current ){
+        this.model = current;
+    }
+
     @Override
     public void showAll() {
         isEditing = false;

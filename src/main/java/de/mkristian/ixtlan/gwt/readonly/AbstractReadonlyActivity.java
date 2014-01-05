@@ -98,7 +98,7 @@ public abstract class AbstractReadonlyActivity<T extends Identifiable>
         places.goTo( factory.newRestfulPlace( RestfulActionEnum.INDEX ) );
     }
     
-    private void startListView() {
+    protected void startListView() {
 		ReadonlyListView<T> view = presenter.listView();
 		
         addHandlerRegistration( view.getReloadButton().addTapHandler( new TapHandler() {
@@ -114,13 +114,19 @@ public abstract class AbstractReadonlyActivity<T extends Identifiable>
 			@Override
 			public void onTap( TapEvent event ) {
                 @SuppressWarnings("unchecked")
-				ModelButton<T> button = (ModelButton<T>)event.getSource();
-                switch(button.action){
-                    case SHOW:
-                        places.goTo( factory.newRestfulPlace( button.model, button.action ) );
-                        break;
-                    default:
-                    	presenter.unknownAction( button.action );
+				ModelButton<T> button = (ModelButton<T>)event.getSource();    
+                if( button.action instanceof RestfulActionEnum ){
+                    switch( RestfulActionEnum.valueOf( button.action ) ){
+                        case SHOW:
+                            places.goTo( factory.newRestfulPlace( button.model, button.action ) );
+                            break;
+                        default:
+                        	presenter.unknownAction( button.action );
+                    }
+                }  
+                else {
+                    places.goTo( factory.newRestfulPlace( button.model,
+                                                          button.action ) );
                 }
 			}
 		} ) );

@@ -8,7 +8,7 @@ import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 
 import de.mkristian.ixtlan.gwt.models.Identifiable;
-import de.mkristian.ixtlan.gwt.places.RestfulActionEnum;
+import de.mkristian.ixtlan.gwt.places.RestfulAction;
 
 public class ListWidget<T extends Identifiable> extends FlexTable {
 
@@ -22,7 +22,7 @@ public class ListWidget<T extends Identifiable> extends FlexTable {
     	return handlerRegistrationCollection;
 	}
 	
-	protected ButtonBase newButton( RestfulActionEnum action, T model ) {
+	protected ButtonBase newButton( RestfulAction action, T model ) {
         ModelButton<T> button = new ModelButton<T>( action, model );
         handlerRegistrationCollection.addHandlerRegistration( button.addTapHandler( tapHandler ) );
         return button;

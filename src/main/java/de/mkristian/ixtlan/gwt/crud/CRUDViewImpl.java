@@ -31,6 +31,7 @@ public abstract class CRUDViewImpl<T extends Identifiable>
         newButton.setVisible( true );
     }
 
+    @Override
     protected ButtonBar createFooter()
     {
         createButton = new Button();

@@ -78,31 +78,31 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
                 }
             }    
         });
-        switch( RestfulActionEnum.valueOf( place.action ) ){
-            case SHOW:
-                startView();
-                doShow();
-                break;
-            case NEW:
-                presenter.showNew( place.model );
-                startView();
-                break;
-            case EDIT:
-                startView();
-                if ( place.model != null ) {
-                    presenter.edit( place.model );
-                }
-                else {
-                    presenter.edit( place.id );
-                }
-                break;
-            case INDEX:
-                startListView();
-                doShowAll();
-                break;
-            default:
-                presenter.unknownAction( place.action );
-                break;
+        if ( place.action instanceof RestfulActionEnum ){
+            switch( RestfulActionEnum.valueOf( place.action ) ){
+                case SHOW:
+                    startView();
+                    doShow();
+                    break;
+                case NEW:
+                    presenter.showNew( place.model );
+                    startView();
+                    break;
+                case EDIT:
+                    startView();
+                    if ( place.model != null ) {
+                        presenter.edit( place.model );
+                    }
+                    else {
+                        presenter.edit( place.id );
+                    }
+                    break;
+                case INDEX:
+                    startListView();
+                    doShowAll();
+                    break;
+                default:
+            }
         }
     }
 
@@ -162,17 +162,23 @@ public abstract class AbstractCRUDActivity<T extends Identifiable>
 			public void onTap( TapEvent event ) {
                 @SuppressWarnings("unchecked")
 				ModelButton<T> button = (ModelButton<T>)event.getSource();
-                switch(button.action){
-                	case DESTROY:
-                		presenter.delete( button.model );
-                		break;
-                	case EDIT:
-                    case SHOW:
-                        places.goTo( factory.newRestfulPlace( button.model,
-                                                              button.action ) );
-                        break;
-                    default:
-                    	presenter.unknownAction( button.action );
+                if( button.action instanceof RestfulActionEnum ){
+                    switch( RestfulActionEnum.valueOf( button.action ) ){
+                    	case DESTROY:
+                    		presenter.delete( button.model );
+                    		break;
+                    	case EDIT:
+                        case SHOW:
+                            places.goTo( factory.newRestfulPlace( button.model,
+                                                                  button.action ) );
+                            break;
+                        default:
+                        	presenter.unknownAction( button.action );
+                    }
+                }
+                else {
+                    places.goTo( factory.newRestfulPlace( button.model,
+                                                          button.action ) );
                 }
 			}
 		} ) );

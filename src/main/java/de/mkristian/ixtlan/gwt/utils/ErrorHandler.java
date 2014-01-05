@@ -38,10 +38,10 @@ public class ErrorHandler {
     }
 
     public void onError(Method method, Throwable exp) {
-        onErrorr(method, getType(exp));
+        onError(method, getType(exp));
     }
     
-    public void onErrorr(Method method, Type type) {
+    public void onError(Method method, Type type) {
         switch(type){
             case GENERAL:
                 generalError(method);
