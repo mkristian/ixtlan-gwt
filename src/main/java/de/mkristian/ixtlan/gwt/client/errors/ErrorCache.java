@@ -8,12 +8,12 @@ import org.fusesource.restygwt.client.JsonEncoderDecoder;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 
-import de.mkristian.ixtlan.gwt.caches.AbstractPreemptiveCache;
+import de.mkristian.ixtlan.gwt.caches.PreemptiveCache;
 import de.mkristian.ixtlan.gwt.caches.MemoryStore;
 import de.mkristian.ixtlan.gwt.caches.Store;
 
 @Singleton
-public class ErrorCache extends AbstractPreemptiveCache<Error>{
+public class ErrorCache extends PreemptiveCache<Error>{
 
     static interface ErrorCoder extends JsonEncoderDecoder<Error>{
     }

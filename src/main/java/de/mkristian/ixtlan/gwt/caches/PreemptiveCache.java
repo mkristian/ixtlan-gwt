@@ -8,16 +8,16 @@ import de.mkristian.ixtlan.gwt.models.Identifiable;
 import de.mkristian.ixtlan.gwt.readonly.ReadonlyFactory;
 import de.mkristian.ixtlan.gwt.readonly.ReadonlyRemote;
 
-public abstract class AbstractPreemptiveCache<T extends Identifiable>
+public class PreemptiveCache<T extends Identifiable>
 		extends AbstractCache<T> {
     
-    protected AbstractPreemptiveCache(EventBus eventBus, 
+    public PreemptiveCache(EventBus eventBus, 
             Store<T> store, ReadonlyRemote<T> remote,
             ReadonlyFactory<T, ?> factory ){
         this( eventBus, store, remote, factory, null );
     }
     
-    protected AbstractPreemptiveCache(EventBus eventBus,  
+    public PreemptiveCache(EventBus eventBus,  
             Store<T> store, ReadonlyRemote<T> remote,
             ReadonlyFactory<T, ?> factory,
             CacheManager manager){

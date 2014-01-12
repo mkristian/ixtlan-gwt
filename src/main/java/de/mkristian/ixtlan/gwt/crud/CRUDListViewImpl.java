@@ -9,7 +9,7 @@ import de.mkristian.ixtlan.gwt.common.ListWidget;
 import de.mkristian.ixtlan.gwt.models.Identifiable;
 import de.mkristian.ixtlan.gwt.places.RestfulActionEnum;
 
-public abstract class CRUDListViewImpl<T extends Identifiable> 
+public class CRUDListViewImpl<T extends Identifiable> 
 		extends DetailListViewImpl<T> 
 		implements CRUDListView<T> {
 

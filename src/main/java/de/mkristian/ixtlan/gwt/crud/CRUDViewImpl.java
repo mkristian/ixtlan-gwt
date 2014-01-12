@@ -14,7 +14,7 @@ import de.mkristian.ixtlan.gwt.places.RestfulActionEnum;
 import de.mkristian.ixtlan.gwt.singleton.SingletonViewImpl;
 import de.mkristian.ixtlan.gwt.ui.EnabledEditor;
 
-public abstract class CRUDViewImpl<T extends Identifiable> 
+public class CRUDViewImpl<T extends Identifiable> 
             extends SingletonViewImpl<T>
             implements CRUDView<T> {
 
